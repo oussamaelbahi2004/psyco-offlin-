@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="axolotl-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#071D19">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="عرض S3 ENS">
+    <link id="pwa-manifest" rel="manifest">
+    <title>عرض تفاعلي (S3 - ENS): اضطرابات التعلم النمائية والأكاديمية</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Cairo & Readex Pro for Clear Arabic + Amiri for Editorial Accents -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,700;1,700&family=Cairo:wght@400;500;600;700;800;900&family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Readex Pro', 'Cairo', 'sans-serif'],
+                        serif: ['Amiri', 'serif']
+                    },
+                    colors: {
+                        aeline: {
+                            bg: '#F4F6F0',
+                            surface: '#FFFFFF',
+                            forest: '#1C3325',
+                            sage: '#4A7856',
+                            lime: '#C5E86C',
+                            sand: '#EAECE4'
+                        },
+                        axolotl: {
+                            bg: '#071E1A',
+                            emerald: '#0F3830',
+                            teal: '#174E44',
+                            neon: '#A3E635'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* =========================================================
+           THEME 1 (DEFAULT): AELINE CLEAN NATURE EDITORIAL (Image 1)
+           THEME 2 (TOGGLE): AXOLOTL EMERALD GLASS (Image 2)
+        ========================================================= */
+        :root {
+            --bg-main: #F4F6F0;
+            --bg-sec: #EAEee5;
+            --surface-card: #FFFFFF;
+            --surface-glass: rgba(255, 255, 255, 0.88);
+            --text-primary: #14261C;
+            --text-secondary: #43594C;
+            --accent-green: #3F6E4A;
+            --accent-lime: #C5E86C;
+            --accent-lime-text: #14261C;
+            --border-subtle: rgba(28, 51, 37, 0.12);
+            --card-shadow: 0 14px 34px -10px rgba(20, 38, 28, 0.07);
+        }
+
+        html.axolotl-theme {
+            --bg-main: #071D19;
+            --bg-sec: #0C2B25;
+            --surface-card: rgba(16, 56, 48, 0.72);
+            --surface-glass: rgba(11, 41, 35, 0.85);
+            --text-primary: #F1F8F5;
+            --text-secondary: #B5D1C8;
+            --accent-green: #84CC16;
+            --accent-lime: #B9F252;
+            --accent-lime-text: #071D19;
+            --border-subtle: rgba(185, 242, 82, 0.22);
+            --card-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.45);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: 'Readex Pro', 'Cairo', sans-serif;
+            overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* Dyslexia-Friendly Reading Spacing Mode */
+        body.dyslexia-spacing {
+            letter-spacing: 0.03em !important;
+            word-spacing: 0.15em !important;
+            line-height: 2.05 !important;
+        }
+
+        /* Cards inspired by Aeline & Axolotl */
+        .eco-card {
+            background: var(--surface-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 1.5rem;
+            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease, box-shadow 0.28s ease;
+        }
+        .eco-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-green);
+        }
+
+        /* Axolotl Frosted Glass Container (Image 2 Sourced From Nature Strip) */
+        .axolotl-glass-strip {
+            background: linear-gradient(135deg, #123D35 0%, #195247 50%, #0E312A 100%);
+            color: #F4F9F6;
+            border: 1px solid rgba(197, 232, 108, 0.32);
+            border-radius: 1.75rem;
+            box-shadow: 0 22px 50px -12px rgba(10, 36, 30, 0.35);
+        }
+
+        /* Aeline Lime Highlight Card (Image 1 Bottom Right Card) */
+        .lime-highlight-box {
+            background: linear-gradient(135deg, #C5E86C 0%, #B2DF48 100%);
+            color: #14261C;
+            border-radius: 1.5rem;
+            box-shadow: 0 16px 35px -10px rgba(163, 230, 53, 0.35);
+        }
+
+        /* Aeline Tall Vertical Feature Cards (Image 1 Middle Section) */
+        .tall-nature-card {
+            background: linear-gradient(180deg, rgba(20, 48, 34, 0.78) 0%, rgba(11, 31, 22, 0.96) 100%);
+            color: #FFFFFF;
+            border-radius: 1.5rem;
+            border: 1px solid rgba(197, 232, 108, 0.25);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .tall-nature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 22px 45px -12px rgba(20, 48, 34, 0.45);
+        }
+
+        /* Term Tooltip Badge (Explains difficult terms simply for S3 students) */
+        .term-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.1rem 0.55rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 0.82em;
+            background-color: rgba(63, 110, 74, 0.14);
+            color: var(--accent-green);
+            border: 1px dashed var(--accent-green);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        html.axolotl-theme .term-badge {
+            background-color: rgba(185, 242, 82, 0.15);
+            color: #C5E86C;
+            border-color: #C5E86C;
+        }
+        .term-badge:hover {
+            background-color: var(--accent-lime);
+            color: #14261C;
+            border-style: solid;
+        }
+
+        /* Paragraph Number Pill */
+        .para-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            background: #1C3325;
+            color: #C5E86C;
+        }
+        html.axolotl-theme .para-badge {
+            background: #C5E86C;
+            color: #071D19;
+        }
+
+        /* Smooth CSS Reveal Animation (Safe: Never gets stuck at opacity 0) */
+        @keyframes gentleFadeUp {
+            from {
+                opacity: 0.15;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .section-animate {
+            animation: gentleFadeUp 0.55s ease-out forwards;
+        }
+
+        /* Active Axis Link in Floating Pill */
+        .dock-link.active {
+            background-color: #C5E86C;
+            color: #14261C !important;
+            font-weight: 800;
+            box-shadow: 0 4px 14px rgba(197, 232, 108, 0.45);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3F6E4A;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="selection:bg-[#C5E86C] selection:text-[#14261C]">
+
+    <!-- =========================================================
+         NEW NAVIGATION ARCHITECTURE (NO REPEATED OLD TOP BAR!)
+         Inspired directly by Image 2 (Axolotl Floating Rounded Glass Pill)
+         + Quick Glossary Bar for S3 University Students
+    ========================================================= -->
+    <div class="fixed top-2 sm:top-3 inset-x-0 z-50 px-2 sm:px-6 pointer-events-none">
+        <div class="max-w-7xl mx-auto w-full flex items-center justify-between gap-1.5 sm:gap-2 pointer-events-auto bg-[#14261C]/95 dark:bg-[#09231E]/95 backdrop-blur-xl text-white px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-full border border-[#C5E86C]/30 shadow-xl overflow-hidden">
+            
+            <!-- Right: Student Module Identity -->
+            <div class="flex items-center gap-1.5 sm:gap-2.5 min-w-0 flex-1 xl:flex-none">
+                <span class="w-7 h-7 sm:w-9 sm:h-9 shrink-0 rounded-full bg-[#C5E86C] text-[#14261C] flex items-center justify-center font-black text-xs sm:text-base shadow">
+                    S3
+                </span>
+                <div class="leading-tight min-w-0">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-[10px] sm:text-[11px] font-bold text-[#C5E86C] truncate">ENS • الإجازة في التربية</span>
+                        <span class="hidden sm:inline text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-emerald-200 shrink-0">مجزوءة السيكوبيداغوجيا</span>
+                    </div>
+                    <p class="text-[11px] sm:text-xs font-bold truncate">اضطرابات التعلم: القراءة، الكتابة، والحساب</p>
+                </div>
+            </div>
+
+            <!-- Center: Clean Axis Switcher Pills (Desktop) -->
+            <nav class="hidden xl:flex items-center gap-1 text-xs shrink-0">
+                <a href="#intro" class="dock-link active px-3 py-1.5 rounded-full text-emerald-100 hover:bg-white/10 transition">المقدمة</a>
+                <a href="#axis1" class="dock-link px-3 py-1.5 rounded-full text-emerald-100 hover:bg-white/10 transition">المحور 1: المفاهيم</a>
+                <a href="#axis2" class="dock-link px-3 py-1.5 rounded-full text-emerald-100 hover:bg-white/10 transition">المحور 2: الدماغ</a>
+                <a href="#axis3" class="dock-link px-3 py-1.5 rounded-full text-emerald-100 hover:bg-white/10 transition">المحور 3: القراءة</a>
+                <a href="#axis4" class="dock-link px-3 py-1.5 rounded-full text-emerald-100 hover:bg-white/10 transition">المحور 4: الكتابة</a>
+                <a href="#axis5" class="dock-link px-3 py-1.5 rounded-full text-emerald-100 hover:bg-white/10 transition">المحور 5: الحساب</a>
+                <a href="#axis6" class="dock-link px-3 py-1.5 rounded-full text-emerald-100 hover:bg-white/10 transition">المحور 6: الدمج</a>
+                <a href="#conclusion" class="dock-link px-3 py-1.5 rounded-full text-emerald-100 hover:bg-white/10 transition">الخاتمة</a>
+            </nav>
+
+            <!-- Left: Quick Interactive Presenter Tools (Compact on Mobile so it NEVER overflows) -->
+            <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
+                <!-- Open Simple Glossary Modal -->
+                <button onclick="openGlossaryModal()" class="px-2 sm:px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-bold bg-[#C5E86C] text-[#14261C] hover:brightness-105 flex items-center gap-1 transition shadow">
+                    <i class="ph-bold ph-book-bookmark text-xs sm:text-base"></i>
+                    <span class="hidden sm:inline">قاموس المصطلحات المبسط</span>
+                    <span class="sm:hidden">القاموس</span>
+                </button>
+
+                <!-- Install App / Offline Ready Button -->
+                <button onclick="openInstallModal()" id="installAppBtn" title="تثبيت التطبيق والعمل بدون إنترنت" class="px-2 sm:px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-bold bg-emerald-500/20 hover:bg-[#C5E86C] hover:text-[#14261C] text-[#C5E86C] border border-[#C5E86C]/40 flex items-center gap-1 transition">
+                    <i class="ph-bold ph-download-simple text-xs sm:text-base"></i>
+                    <span class="hidden md:inline">تثبيت / Offline</span>
+                    <span class="md:hidden">تثبيت</span>
+                </button>
+
+                <!-- Switch Between Axolotl Emerald Dark (Default) & Aeline Light -->
+                <button onclick="toggleNatureTheme()" id="themeBtn" title="تغيير المظهر" class="w-7 h-7 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 rounded-full text-xs font-semibold bg-white/10 hover:bg-white/20 text-emerald-100 flex items-center justify-center gap-1 transition">
+                    <i class="ph-duotone ph-leaf text-[#C5E86C] text-sm sm:text-base"></i>
+                    <span id="themeText" class="hidden lg:inline">نمط Aeline الفاتح</span>
+                </button>
+
+                <!-- Fullscreen Button -->
+                <button onclick="toggleFullScreen()" title="ملء الشاشة للعرض في القسم" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-[#C5E86C] hover:text-[#14261C] flex items-center justify-center transition">
+                    <i class="ph-bold ph-corners-out text-xs sm:text-base"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Quick Axis Bar (Visible only on phones/tablets) -->
+        <div class="xl:hidden max-w-7xl mx-auto mt-1.5 pointer-events-auto flex items-center gap-1.5 overflow-x-auto bg-[#14261C]/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-[11px] text-white">
+            <a href="#intro" class="dock-link active shrink-0 px-2.5 py-1 rounded-full">المقدمة</a>
+            <a href="#axis1" class="dock-link shrink-0 px-2.5 py-1 rounded-full">1. المفاهيم والفرق</a>
+            <a href="#axis2" class="dock-link shrink-0 px-2.5 py-1 rounded-full">2. الدماغ والنماذج</a>
+            <a href="#axis3" class="dock-link shrink-0 px-2.5 py-1 rounded-full">3. عسر القراءة</a>
+            <a href="#axis4" class="dock-link shrink-0 px-2.5 py-1 rounded-full">4. عسر الكتابة</a>
+            <a href="#axis5" class="dock-link shrink-0 px-2.5 py-1 rounded-full">5. عسر الحساب</a>
+            <a href="#axis6" class="dock-link shrink-0 px-2.5 py-1 rounded-full">6. التربية الدامجة</a>
+            <a href="#conclusion" class="dock-link shrink-0 px-2.5 py-1 rounded-full">الخاتمة</a>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-24 pb-24 space-y-20">
+
+        <!-- =========================================================
+             HERO SECTION & GENERAL INTRODUCTION
+             Visual Design: Aeline Split Nature Hero (Image 1) + Axolotl Vitamin Badges (Image 2)
+        ========================================================= -->
+        <section id="intro" class="section-animate scroll-mt-28 space-y-8">
+            <div class="eco-card p-6 sm:p-10 relative overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    
+                    <!-- Right Column: Clear Title & Student-Friendly Explanation -->
+                    <div class="lg:col-span-7 space-y-5">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#3F6E4A]/15 text-[#2E5738] dark:text-[#C5E86C] text-xs font-bold border border-[#3F6E4A]/30">
+                            <i class="ph-fill ph-plant text-base"></i>
+                            <span>بحث جامعي لنيل الإجازة في التربية • الفصل الثالث (S3 - ENS) • مجزوءة السيكوبيداغوجيا</span>
+                        </div>
+
+                        <h1 class="text-3xl sm:text-5xl font-black leading-[1.22] tracking-tight">
+                            اضطرابات التعلم النمائية والأكاديمية:
+                            <span class="block mt-1 text-[#3F6E4A] dark:text-[#C5E86C] font-serif italic font-bold">
+                                القراءة، الكتابة، والحساب بالابتدائي
+                            </span>
+                        </h1>
+
+                        <p class="text-sm sm:text-base leading-relaxed opacity-90">
+                            عرض أكاديمي واضح ومفصّل يشرح لطالب التعليم الابتدائي كيف يفرّق بين التلميذ الذي يعاني من <strong>صعوبة عادية عابرة</strong> وبين التلميذ الذكي الذي يعاني من <strong>اضطراب عصبي نمائي محدد</strong> في القراءة (<span onclick="explainTerm('dyslexia')" class="term-badge">الديسليكسيا <i class="ph-bold ph-info"></i></span>)، أو الكتابة (<span onclick="explainTerm('dysgraphia')" class="term-badge">الديسغرافيا <i class="ph-bold ph-info"></i></span>)، أو الحساب (<span onclick="explainTerm('dyscalculia')" class="term-badge">الديسكالكوليا <i class="ph-bold ph-info"></i></span>).
+                        </p>
+
+                        <!-- Instant Explanation Box for the 3 Core Terms (So nobody in class gets confused!) -->
+                        <div class="p-4 rounded-2xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/25 space-y-2">
+                            <div class="text-xs font-extrabold uppercase tracking-wider text-[#2E5738] dark:text-[#C5E86C] flex items-center gap-1.5">
+                                <i class="ph-fill ph-lightbulb"></i>
+                                <span>شرح المصطلحات الثلاثة الأساسية باختصار ووضوح قبل البدء:</span>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+                                <div class="p-2.5 rounded-xl bg-white/80 dark:bg-black/25 border border-black/5">
+                                    <strong class="text-[#1C3325] dark:text-[#C5E86C] block">1. الديسليكسيا (Dyslexie):</strong>
+                                    تعني <strong>عسر القراءة</strong>؛ طفل ذكي وبصره سليم لكنه يخلط بين الحروف ويجد صعوبة شديدة في قراءة الكلمات.
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-white/80 dark:bg-black/25 border border-black/5">
+                                    <strong class="text-[#1C3325] dark:text-[#C5E86C] block">2. الديسغرافيا (Dysgraphie):</strong>
+                                    تعني <strong>عسر الكتابة والخط</strong>؛ صعوبة في التحكم في القلم ورسم الحروف وتنظيم الخط على السطر، وترافقها <em>الديسأورطوغرافيا</em> (عسر الإملاء).
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-white/80 dark:bg-black/25 border border-black/5">
+                                    <strong class="text-[#1C3325] dark:text-[#C5E86C] block">3. الديسكالكوليا (Dyscalculie):</strong>
+                                    تعني <strong>عسر الحساب</strong>؛ صعوبة فطرية في فهم معنى الأعداد، مقارنة الكميات، وحفظ جدول الضرب.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons (Aeline Style) -->
+                        <div class="flex flex-wrap items-center gap-3 pt-1">
+                            <a href="#axis1" class="px-6 py-3 rounded-full bg-[#1C3325] text-[#C5E86C] font-bold text-sm inline-flex items-center gap-2 hover:scale-[1.02] transition shadow-lg">
+                                <span>تصفح المحاور الستة بالترتيب</span>
+                                <i class="ph-bold ph-arrow-down-left"></i>
+                            </a>
+                            <button onclick="openSimulatorModal()" class="px-5 py-3 rounded-full bg-[#C5E86C] text-[#14261C] font-bold text-sm inline-flex items-center gap-2 hover:brightness-105 transition">
+                                <i class="ph-bold ph-eye"></i>
+                                <span>تجربة محاكاة كيف يقرأ التلميذ المصاب</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Left Column: Aeline Split Visual Concept (Misunderstood Struggle vs Inclusive Blooming) -->
+                    <div class="lg:col-span-5">
+                        <div class="rounded-3xl overflow-hidden border border-[#1C3325]/20 shadow-xl bg-gradient-to-b from-[#1C3325] to-[#0F2419] text-white p-5 space-y-4">
+                            <div class="flex items-center justify-between text-xs border-b border-white/15 pb-3">
+                                <span class="font-bold text-[#C5E86C]">الفكرة المحورية للعرض (نظرة مقارنة)</span>
+                                <span class="px-2.5 py-0.5 rounded-full bg-white/10">من الوصم إلى الفهم</span>
+                            </div>
+
+                            <!-- Split Visual Comparison inspired by Image 1 (Dry Land vs Green Forest) -->
+                            <div class="grid grid-cols-2 gap-3 text-xs">
+                                <!-- Old View (Dry/Negative) -->
+                                <div class="p-4 rounded-2xl bg-amber-950/50 border border-amber-500/30 space-y-2">
+                                    <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold text-[11px]">النظرة التقليدية الخاطئة</span>
+                                    <h4 class="font-bold text-sm text-amber-200">«تلميذ كسول أو متهاون»</h4>
+                                    <ul class="space-y-1 text-[11px] text-amber-100/85">
+                                        <li>• توبيخ التلميذ بسبب بطء القراءة.</li>
+                                        <li>• خصم النقط على رداءة الخط.</li>
+                                        <li>• اتهامه بعدم المراجعة في البيت.</li>
+                                        <li>• النتيجة: عقدة الفشل والهدر المدرسي.</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Scientific Psychopedagogical View (Lush Green/Positive) -->
+                                <div class="p-4 rounded-2xl bg-emerald-900/60 border border-[#C5E86C]/50 space-y-2">
+                                    <span class="px-2 py-0.5 rounded bg-[#C5E86C] text-[#14261C] font-bold text-[11px]">النظرة العلمية الدامجة</span>
+                                    <h4 class="font-bold text-sm text-[#C5E86C]">«اختلاف عصبي في طريقة التعلم»</h4>
+                                    <ul class="space-y-1 text-[11px] text-emerald-100">
+                                        <li>• ذكاء التلميذ عادي أو مرتفع (IQ ≥ 85).</li>
+                                        <li>• رصد مبكر للأخطاء النمطية.</li>
+                                        <li>• تدريس متعدد الحواس وتكييف الامتحان.</li>
+                                        <li>• النتيجة: نجاح مدرسي وتكافؤ الفرص.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- 4 Metric Pills (Aeline Hero Bottom Stats) -->
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-center">
+                                <div class="p-2.5 rounded-xl bg-white/10">
+                                    <div class="text-base font-black text-[#C5E86C]">6 محاور</div>
+                                    <div class="text-[10px] opacity-80">شاملة ومفصلة</div>
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-white/10">
+                                    <div class="text-base font-black text-[#C5E86C]">5% - 15%</div>
+                                    <div class="text-[10px] opacity-80">نسبة الانتشار عالمياً</div>
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-white/10">
+                                    <div class="text-base font-black text-[#C5E86C]">IQ ≥ 85</div>
+                                    <div class="text-[10px] opacity-80">ذكاء عادي تماماً</div>
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-white/10">
+                                    <div class="text-base font-black text-[#C5E86C]">6-12 سنة</div>
+                                    <div class="text-[10px] opacity-80">سن التدخل بالابتدائي</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Structured Sub-sections of the General Introduction -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Intro Part 1 -->
+                <div class="eco-card p-6 space-y-3">
+                    <span class="para-badge">مقدمة • فقرة 1</span>
+                    <h3 class="text-lg font-extrabold">تمهيد سيكوبيداغوجي: من الفشل غير المبرر إلى الفهم العلمي</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed opacity-90 text-justify">
+                        كثيراً ما يصادف أستاذ التعليم الابتدائي داخل فصله متعلماً ذكياً، يشارك شفهياً بفعالية ويفهم القصص المسموعة بسرعة، لكنه يتعثر بشكل محيّر بمجرد مطالبته بقراءة جملة بسيطة، أو نقل فقرة على الدفتر، أو إنجاز عملية حسابية. هذا التناقض لم يعد يُفسَّر علمياً بـ"الكسل"، بل أثبتت علوم الأعصاب المعرفية أنه ناتج عن <strong>اضطرابات عصبية نمائية محددة (Troubles DYS)</strong> تؤثر في طريقة معالجة الدماغ للرموز المكتوبة والعددية.
+                    </p>
+                </div>
+
+                <!-- Intro Part 2 -->
+                <div class="eco-card p-6 space-y-3">
+                    <span class="para-badge">مقدمة • فقرة 2</span>
+                    <h3 class="text-lg font-extrabold">أهمية الموضوع لأستاذ التعليم الابتدائي (ENS)</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed opacity-90 text-justify">
+                        تُعد المرحلة الابتدائية (من السنة الأولى إلى السادسة) المرحلة الذهبية لبناء <strong>أدوات التعلم الأساس (القراءة، الكتابة، الحساب)</strong>، كما تتميز بارتفاع <em>المرونة العصبية للدماغ (Plasticité cérébrale)</em>؛ أي قدرة الدماغ على بناء مسارات تعويضية جديدة بالتدريب. لذلك فإن وعي أستاذ الابتدائي بهذا الثلاثي يجعله "الراصد المبكر الأول" الذي يحمي المتعلم من الإحباط والانقطاع المدرسي.
+                    </p>
+                </div>
+
+                <!-- Intro Part 3 -->
+                <div class="lime-highlight-box p-6 space-y-3">
+                    <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-[#14261C] text-[#C5E86C] inline-block">مقدمة • فقرة 3: الإشكالية المحورية</span>
+                    <h3 class="text-lg font-black">الإشكالية المركزية والأسئلة الفرعية</h3>
+                    <p class="text-xs sm:text-sm font-semibold leading-relaxed">
+                        «كيف يمكن لأستاذ التعليم الابتدائي أن يميز علمياً بين اضطرابات التعلم النمائية والأكاديمية (الديسليكسيا، الديسغرافيا، الديسكالكوليا) وبين التعثرات الدراسية العابرة، وما هي الآليات الديداكتيكية الدامجة الكفيلة بإنصاف هؤلاء المتعلمين؟»
+                    </p>
+                    <ul class="text-xs space-y-1 font-medium border-t border-[#14261C]/20 pt-2">
+                        <li>• <strong>س1:</strong> ما الفروق التشخيصية بين اضطراب التعلم، صعوبة التعلم، بطء التعلم، والتأخر الدراسي؟</li>
+                        <li>• <strong>س2:</strong> كيف يفسر الدماغ والنماذج المعرفية حدوث عسر القراءة والكتابة والحساب؟</li>
+                        <li>• <strong>س3:</strong> كيف نرصد الأخطاء في العربية والفرنسية والرياضيات، وكيف نكيف التدريس والتقويم؟</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             AXIS 01: CONCEPTUAL, HISTORICAL & DIFFERENTIAL DIAGNOSIS
+        ========================================================= -->
+        <section id="axis1" class="section-animate scroll-mt-28 space-y-8">
+            <!-- Clear Axis Banner -->
+            <div class="axolotl-glass-strip p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-[#C5E86C] text-[#14261C]">المحور الأول • AXE 01</span>
+                    <h2 class="text-2xl sm:text-3xl font-black mt-2">الإطار المفاهيمي، التاريخي، والتشخيصي الفارقي (التمييز المفاهيمي)</h2>
+                </div>
+                <div class="text-xs sm:text-sm text-emerald-100 max-w-md">
+                    يضم هذا المحور <strong>4 فقرات أساسية (1.1 إلى 1.4)</strong> لضبط المفاهيم بدقة وإزالة الخلط الشائع بين المصطلحات التربوية.
+                </div>
+            </div>
+
+            <!-- Paragraph 1.1: Historical Evolution -->
+            <div class="eco-card p-6 sm:p-8 space-y-5">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-black/10 dark:border-white/10 pb-4">
+                    <div>
+                        <span class="para-badge">الفقرة 1.1</span>
+                        <h3 class="text-xl font-extrabold mt-2">الجذور التاريخية وتطور المفهوم: من "العمى اللفظي الخلقي" إلى "اضطرابات التعلم" (Samuel Kirk, 1963)</h3>
+                    </div>
+                    <span class="text-xs opacity-75">انقر على كل محطة تاريخية لمعاينة التحول العلمي</span>
+                </div>
+
+                <!-- 5 Historical Stations (Inspired by Axolotl Sourced Strip) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+                    <div onclick="showHistoryDetail(0)" class="hist-card cursor-pointer p-4 rounded-2xl bg-[#3F6E4A]/15 border-2 border-[#3F6E4A] transition">
+                        <span class="text-xs font-black text-[#3F6E4A] dark:text-[#C5E86C]">المحطة 1 • 1877</span>
+                        <h4 class="font-bold text-sm mt-1">أدولف كوسماول (Kussmaul)</h4>
+                        <p class="text-xs opacity-80 mt-1">أول طبيب أطلق مصطلح <strong>"العمى اللفظي" (Cécité verbale)</strong> على فقدان القدرة على القراءة رغم سلامة العين والذكاء.</p>
+                    </div>
+
+                    <div onclick="showHistoryDetail(1)" class="hist-card cursor-pointer p-4 rounded-2xl bg-black/5 dark:bg-white/5 border border-transparent hover:border-[#3F6E4A] transition">
+                        <span class="text-xs font-black text-[#3F6E4A] dark:text-[#C5E86C]">المحطة 2 • 1896-1917</span>
+                        <h4 class="font-bold text-sm mt-1">مورغان وهينشلوود</h4>
+                        <p class="text-xs opacity-80 mt-1">وصفا حالة الطفل الذكي "بيرسي" العاجز عن القراءة وسمّياها <strong>"العمى اللفظي الخلقي"</strong> وأكدا طابعها الوراثي.</p>
+                    </div>
+
+                    <div onclick="showHistoryDetail(2)" class="hist-card cursor-pointer p-4 rounded-2xl bg-black/5 dark:bg-white/5 border border-transparent hover:border-[#3F6E4A] transition">
+                        <span class="text-xs font-black text-[#3F6E4A] dark:text-[#C5E86C]">المحطة 3 • 1925</span>
+                        <h4 class="font-bold text-sm mt-1">صموئيل أورتن (Orton)</h4>
+                        <p class="text-xs opacity-80 mt-1">لاحظ أخطاء عكس الحروف (b/d) وسماها <strong>"الرموز الملتوية"</strong> وابتكر التدريس متعدد الحواس.</p>
+                    </div>
+
+                    <div onclick="showHistoryDetail(3)" class="hist-card cursor-pointer p-4 rounded-2xl bg-black/5 dark:bg-white/5 border border-transparent hover:border-[#3F6E4A] transition">
+                        <span class="text-xs font-black text-[#3F6E4A] dark:text-[#C5E86C]">المحطة 4 • 1963</span>
+                        <h4 class="font-bold text-sm mt-1">صموئيل كيرك (Samuel Kirk)</h4>
+                        <p class="text-xs opacity-80 mt-1">نحت رسمياً مصطلح <strong>"اضطرابات التعلم" (Learning Disabilities)</strong> ونقل المفهوم من الطب إلى التربية.</p>
+                    </div>
+
+                    <div onclick="showHistoryDetail(4)" class="hist-card cursor-pointer p-4 rounded-2xl bg-black/5 dark:bg-white/5 border border-transparent hover:border-[#3F6E4A] transition">
+                        <span class="text-xs font-black text-[#3F6E4A] dark:text-[#C5E86C]">المحطة 5 • العصر الحديث</span>
+                        <h4 class="font-bold text-sm mt-1">DSM-5-TR و CIM-11</h4>
+                        <p class="text-xs opacity-80 mt-1">تصنيفها رسمياً ضمن <strong>"الاضطرابات العصبية النمائية"</strong> واعتماد شرط التدخل التربوي المسبق.</p>
+                    </div>
+                </div>
+
+                <div id="historyBox" class="p-4 rounded-2xl bg-[#1C3325] text-white text-xs sm:text-sm leading-relaxed">
+                    <strong class="text-[#C5E86C] block mb-1">تفصيل المحطة (1896 - 1917): مورغان وهينشلوود (Morgan & Hinshelwood):</strong>
+                    نشر الطبيب البريطاني برينغل مورغان سنة 1896 دراسة عن فتى عمره 14 سنة اسمه (Percy F.) كان متفوقاً في الحساب الشفهي وذكياً جداً بين أقرانه، لكنه يعجز تماماً عن قراءة الكلمات المكتوبة. ثم جاء طبيب العيون الاسكتلندي جيمس هينشلوود (1917) فأثبت أن المشكلة ليست في شبكية العين بل في مناطق تخزين صور الكلمات في الفص الجداري الأيسر من الدماغ.
+                </div>
+            </div>
+
+            <!-- Paragraph 1.2: DSM-5-TR and CIM-11 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="eco-card p-6 sm:p-7 space-y-4">
+                    <span class="para-badge">الفقرة 1.2 (أ) • الدليل الأمريكي DSM-5-TR</span>
+                    <h3 class="text-lg sm:text-xl font-extrabold">اضطراب التعلم المحدد (Specific Learning Disorder) في DSM-5-TR</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed opacity-90">
+                        تجمع الجمعية الأمريكية للطب النفسي (APA) اضطرابات القراءة والكتابة والحساب تحت اسم واحد هو <strong>"اضطراب التعلم المحدد"</strong>، وتضع لتشخيصه <strong>4 شروط واضحة</strong> يجب أن يعرفها الطالب الأستاذ:
+                    </p>
+                    <div class="space-y-2 text-xs">
+                        <div class="p-3 rounded-xl bg-black/5 dark:bg-white/5">
+                            <strong class="text-[#3F6E4A] dark:text-[#C5E86C]">1. شرط الاستمرارية (6 أشهر على الأقل):</strong> استمرار التعثر في القراءة أو الكتابة أو الحساب لمدة لا تقل عن 6 أشهر رغم تقديم دعم تربوي خاص للمتعلم.
+                        </div>
+                        <div class="p-3 rounded-xl bg-black/5 dark:bg-white/5">
+                            <strong class="text-[#3F6E4A] dark:text-[#C5E86C]">2. شرط الفارق عن العمر والصف:</strong> مستوى التلميذ في المهارة المصابة أقل بكثير من المستوى العادي لأقرانه في نفس السن والمستوى الدراسي.
+                        </div>
+                        <div class="p-3 rounded-xl bg-black/5 dark:bg-white/5">
+                            <strong class="text-[#3F6E4A] dark:text-[#C5E86C]">3. شرط الظهور في سنوات التمدرس الأولى:</strong> يبدأ الاضطراب في المرحلة الابتدائية عند مواجهة القراءة والكتابة والرياضيات.
+                        </div>
+                        <div class="p-3 rounded-xl bg-black/5 dark:bg-white/5">
+                            <strong class="text-[#3F6E4A] dark:text-[#C5E86C]">4. شرط الاستبعاد (سلامة الذكاء والحواس):</strong> ألا يكون سبب التعثر إعاقة ذهنية، أو ضعفاً في البصر أو السمع، أو ظروفاً أسرية قاسية.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eco-card p-6 sm:p-7 space-y-4">
+                    <span class="para-badge">الفقرة 1.2 (ب) • منظمة الصحة العالمية CIM-11 / ICD-11</span>
+                    <h3 class="text-lg sm:text-xl font-extrabold">التصنيف الدولي للأمراض (CIM-11) لمنظمة الصحة العالمية</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed opacity-90">
+                        يسميه التصنيف الدولي الحادي عشر <strong>"اضطراب التعلم النمائي" (Developmental Learning Disorder - 6A03)</strong> ويقسمه إلى ثلاثة فروع أكاديمية واضحة تهم المدرس:
+                    </p>
+                    <div class="grid grid-cols-1 gap-2.5 text-xs">
+                        <div class="p-3.5 rounded-xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/25 flex items-start gap-3">
+                            <span class="px-2.5 py-1 rounded bg-[#1C3325] text-[#C5E86C] font-mono font-bold shrink-0">6A03.0</span>
+                            <div>
+                                <strong>اضطراب التعلم النمائي مع قصور في القراءة (الديسليكسيا):</strong> صعوبة في دقة القراءة، سرعتها (الطلاقة)، وفهم المقروء.
+                            </div>
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/25 flex items-start gap-3">
+                            <span class="px-2.5 py-1 rounded bg-[#1C3325] text-[#C5E86C] font-mono font-bold shrink-0">6A03.1</span>
+                            <div>
+                                <strong>اضطراب التعلم النمائي مع قصور في التعبير الكتابي (الديسأورطوغرافيا):</strong> صعوبة في الدقة الإملائية، القواعد النحوية، وبناء الفقرات المكتوبة.
+                            </div>
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/25 flex items-start gap-3">
+                            <span class="px-2.5 py-1 rounded bg-[#1C3325] text-[#C5E86C] font-mono font-bold shrink-0">6A03.2</span>
+                            <div>
+                                <strong>اضطراب التعلم النمائي مع قصور في الرياضيات (الديسكالكوليا):</strong> صعوبة في إدراك الأعداد، حفظ العمليات، والاستدلال الرياضي.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paragraph 1.3: Differential Diagnosis Table -->
+            <div class="eco-card p-6 sm:p-8 space-y-5">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                    <div>
+                        <span class="para-badge">الفقرة 1.3 • مهمة جداً في الامتحانات والمباريات</span>
+                        <h3 class="text-xl sm:text-2xl font-extrabold mt-2">التشخيص الفارقي (Diagnostic Différentiel) لرفع اللبس البيداغوجي داخل القسم</h3>
+                        <p class="text-xs sm:text-sm opacity-80 mt-1">كيف نميز بين: اضطراب التعلم (Trouble) • صعوبة التعلم (Difficulté) • بطء التعلم (Lenteur) • التأخر الدراسي (Retard)؟</p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto rounded-2xl border border-black/10 dark:border-white/15">
+                    <table class="w-full text-right text-xs sm:text-sm border-collapse">
+                        <thead>
+                            <tr class="bg-[#1C3325] text-white">
+                                <th class="p-3.5 font-bold">وجه المقارنة</th>
+                                <th class="p-3.5 font-bold text-[#C5E86C]">1. اضطراب التعلم (Trouble DYS)</th>
+                                <th class="p-3.5 font-bold">2. صعوبة التعلم (Difficulté)</th>
+                                <th class="p-3.5 font-bold">3. بطء التعلم (Lenteur)</th>
+                                <th class="p-3.5 font-bold">4. التأخر الدراسي (Retard)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-black/10 dark:divide-white/10">
+                            <tr>
+                                <td class="p-3.5 font-bold bg-black/5 dark:bg-white/5">السبب الرئيسي</td>
+                                <td class="p-3.5 bg-[#C5E86C]/15 font-semibold">سبب <strong>عصبي بيولوجي داخلي</strong> (خلل وظيفي في مناطق معالجة اللغة أو العدد بالدماغ).</td>
+                                <td class="p-3.5">سبب <strong>بيداغوجي أو نفسي عابر</strong> (طريقة شرح غير مناسبة، غياب قصير، قلق مؤقت).</td>
+                                <td class="p-3.5">انخفاض طفيف في القدرة العقلية العامة (ذكاء على الحدود الدنيا).</td>
+                                <td class="p-3.5">أسباب <strong>اجتماعية أو أسرية أو صحية</strong> (فقر، إهمال، غياب متكرر، نقص دافعية).</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3.5 font-bold bg-black/5 dark:bg-white/5">درجة الذكاء (IQ)</td>
+                                <td class="p-3.5 bg-[#C5E86C]/15 font-semibold"><strong>ذكاء عادي أو مرتفع (IQ ≥ 85)</strong>؛ التلميذ ذكي ويفهم جيداً شفهياً.</td>
+                                <td class="p-3.5">ذكاء عادي (IQ ≥ 85).</td>
+                                <td class="p-3.5"><strong>ذكاء حدي (بين 70 و 84)</strong>؛ أقل من المتوسط بقليل ولكنه ليس إعاقة ذهنية.</td>
+                                <td class="p-3.5">ذكاء عادي (IQ ≥ 85) لكنه غير مستثمر بسبب الإهمال أو الظروف.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3.5 font-bold bg-black/5 dark:bg-white/5">هل يزول أم يستمر؟</td>
+                                <td class="p-3.5 bg-[#C5E86C]/15 font-semibold"><strong>مستمر مدى الحياة (Permanent)</strong>؛ لكن التلميذ يتعلم استراتيجيات لتجاوزه والتعايش معه.</td>
+                                <td class="p-3.5"><strong>مؤقت وعابر (Transitoire)</strong>؛ يزول تماماً بعد حصص الدعم التربوي العادي.</td>
+                                <td class="p-3.5">مستمر؛ يحتاج دائماً إلى وقت أطول وتكرار وتبسيط.</td>
+                                <td class="p-3.5">قابل للعلاج متى تحسنت ظروف التلميذ الاجتماعية والنفسية وتم تعويض ما فاته.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3.5 font-bold bg-black/5 dark:bg-white/5">المواد المتأثرة</td>
+                                <td class="p-3.5 bg-[#C5E86C]/15 font-semibold"><strong>محدد ونوعي</strong> في مهارة معينة (مثلاً ممتاز في الرياضيات ومتعثر جداً في القراءة).</td>
+                                <td class="p-3.5">مرتبط بدرس أو مفهوم معين لم يُفهم جيداً.</td>
+                                <td class="p-3.5"><strong>ضعف عام في جميع المواد</strong> التي تتطلب تفكيراً مجرداً وسرعة بديهة.</td>
+                                <td class="p-3.5">تراجع عام في أغلب المواد بسبب تراكم الدروس الضائعة.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Exclusion Criteria Box -->
+                <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs sm:text-sm">
+                    <strong class="text-amber-800 dark:text-amber-300 block mb-1">استبعاد المسببات الأولية (متى لا نقول إن التلميذ لديه ديسليكسيا أو ديسكالكوليا؟):</strong>
+                    لا نشخص "اضطراب تعلم محدد" إذا كان سبب تعثر التلميذ هو: <strong>(1) إعاقة ذهنية (IQ أقل من 70)</strong>، أو <strong>(2) ضعف بصر أو سمع غير مصحح بنظارات أو سماعة</strong>، أو <strong>(3) حرمان بيئي وثقافي شديد أو عدم معرفة لغة التدريس</strong>، أو <strong>(4) صدمة نفسية وانفعالية حادة</strong>.
+                </div>
+            </div>
+
+            <!-- Paragraph 1.4: Developmental vs Academic Relationship -->
+            <div class="eco-card p-6 sm:p-8 space-y-5">
+                <div>
+                    <span class="para-badge">الفقرة 1.4</span>
+                    <h3 class="text-xl font-extrabold mt-2">العلاقة التكاملية والتراتبية بين الاضطرابات النمائية والأكاديمية</h3>
+                    <p class="text-xs sm:text-sm opacity-85 mt-1">
+                        لماذا نسمي هذا البحث "اضطرابات التعلم النمائية والأكاديمية"؟ لأن الاضطرابات الأكاديمية التي تظهر في المدرسة (القراءة، الكتابة، الحساب) هي <strong>نتيجة مباشرة</strong> لاضطرابات نمائية سابقة في الوظائف الذهنية الأساسية للطفل:
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch text-xs sm:text-sm">
+                    <div class="p-5 rounded-2xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30 space-y-2">
+                        <span class="text-xs font-black text-[#3F6E4A] dark:text-[#C5E86C]">الأساس 1 • قبل المدرسة (نمائي أولي)</span>
+                        <h4 class="font-bold text-base">اضطراب الانتباه، الإدراك، والذاكرة العاملة</h4>
+                        <p class="opacity-90 leading-relaxed">
+                            إذا كان الطفل يعاني منذ صغره من ضعف في <strong>الانتباه البصري/السمعي</strong>، أو ضعف في <strong>الذاكرة العاملة</strong> (ينسى المعلومة بعد ثوانٍ)، أو ضعف في <strong>الإدراك الحسي-الحركي</strong>...
+                        </p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#3F6E4A]/15 border border-[#3F6E4A]/40 space-y-2">
+                        <span class="text-xs font-black text-[#3F6E4A] dark:text-[#C5E86C]">الأساس 2 • مرحلة التهيؤ (نمائي ثانوي)</span>
+                        <h4 class="font-bold text-base">اضطراب اللغة الشفهية والوعي الصوتي</h4>
+                        <p class="opacity-90 leading-relaxed">
+                            ...فإن ذلك يؤدي إلى تأخر في <strong>اللغة الشفهية</strong> وضعف في القدرة على تمييز أصوات الكلمات المسموعة وتقطيعها شفهياً، وضعف في إدراك العلاقات المكانية والكمية...
+                        </p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#1C3325] text-white border-2 border-[#C5E86C] space-y-2">
+                        <span class="text-xs font-black text-[#C5E86C]">النتيجة 3 • عند دخول الابتدائي (أكاديمي)</span>
+                        <h4 class="font-bold text-base text-[#C5E86C]">ظهور الثلاثي الأكاديمي (DYS)</h4>
+                        <p class="text-emerald-100 leading-relaxed">
+                            ...وعندما يدخل المدرسة الابتدائية ويُطلب منه تعلم القراءة والكتابة والحساب، يظهر الخلل الأكاديمي: <strong>الديسليكسيا</strong> (في القراءة)، <strong>الديسغرافيا</strong> (في الكتابة)، و<strong>الديسكالكوليا</strong> (في الحساب).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             AXIS 02: NEUROLOGICAL BASES & COGNITIVE MODELS
+        ========================================================= -->
+        <section id="axis2" class="section-animate scroll-mt-28 space-y-8">
+            <div class="axolotl-glass-strip p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-[#C5E86C] text-[#14261C]">المحور الثاني • AXE 02</span>
+                    <h2 class="text-2xl sm:text-3xl font-black mt-2">الأسس النيرولوجية والنماذج المعرفية المفسرة (علم النفس العصبي المعرفي)</h2>
+                </div>
+                <div class="text-xs sm:text-sm text-emerald-100 max-w-md">
+                    يضم <strong>4 فقرات (2.1 إلى 2.4)</strong> تشرح بلغة مبسطة ماذا يحدث داخل دماغ المتعلم حسب كبار العلماء (ديهين، حبيب، كولثارت، راموس، فالدوا، وبادلي).
+                </div>
+            </div>
+
+            <!-- Paragraph 2.1: Dehaene (Neural Recycling & VWFA) + Michel Habib -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-7 eco-card p-6 sm:p-8 space-y-4">
+                    <span class="para-badge">الفقرة 2.1 • الدماغ وتصوير الرنين المغناطيسي الوظيفي (fMRI)</span>
+                    <h3 class="text-xl font-extrabold">فرضية "إعادة التدوير العصبي" ومنطقة "صندوق بريد الكلمات" (Stanislas Dehaene)</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed opacity-90 text-justify">
+                        يشرح عالم الأعصاب الفرنسي <strong>ستانيسلاس ديهين (Stanislas Dehaene)</strong> حقيقة علمية مدهشة: الإنسان يُولد ولديه مركز فطري للكلام الشفهي، لكنه <strong>لا يولد بمركز فطري للقراءة</strong> لأن الكتابة اختراع بشري حديث. فكيف نتعلم القراءة إذن في المدرسة الابتدائية؟
+                    </p>
+                    <div class="p-4 rounded-2xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30 space-y-2 text-xs sm:text-sm">
+                        <strong class="text-[#1C3325] dark:text-[#C5E86C] block">كيف تعمل "إعادة التدوير العصبي" (Recyclage Neuronal)؟</strong>
+                        يقوم دماغ الطفل عند تعلم الحروف بـ<strong>"إعادة تدوير" (تغيير وظيفة)</strong> منطقة صغيرة في الفص القذالي-الصدغي الأيسر كانت مخصصة للتعرف على الوجوه والأشكال الهندسية، ويحولها إلى منطقة متخصصة في التعرف السريع على الكلمات المكتوبة سماها ديهين: <span onclick="explainTerm('vwfa')" class="term-badge">منطقة صندوق بريد الكلمات (VWFA) <i class="ph-bold ph-info"></i></span>.
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div class="p-3.5 rounded-xl bg-black/5 dark:bg-white/5">
+                            <strong class="text-[#3F6E4A] dark:text-[#C5E86C] block mb-1">لماذا يقلب الطفل الديسليكسي (b و d)؟</strong>
+                            لأن الدماغ بطبيعته يعتبر الصورة ومعكوسها في المرآة شيئاً واحداً. في القراءة العادية تتعلم منطقة (VWFA) إلغاء هذا التماثل المرآتي، أما عند الطفل الديسليكسي فيبقى التماثل المرآتي نشطاً فيرى (b) و(d) أو (2) و(6) كأنهما نفس الشكل!
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-black/5 dark:bg-white/5">
+                            <strong class="text-[#3F6E4A] dark:text-[#C5E86C] block mb-1">ميشيل حبيب (Michel Habib): ضعف الاتصال العصبي</strong>
+                            أوضح طبيب الأعصاب <strong>ميشيل حبيب</strong> أن دماغ المتعلم المصاب باضطرابات التعلم سليم من حيث الذكاء، لكن المشكلة تكمن في <strong>ضعف الألياف العصبية الرابطة (الحزمة المقوسة)</strong> التي تنقل المعلومة بسرعة بين مركز البصر (رؤية الحرف) ومركز السمع والنطق (نطق الصوت).
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Brain Hotspots (5 cols) -->
+                <div class="lg:col-span-5 eco-card p-6 sm:p-7 flex flex-col justify-between space-y-4">
+                    <div>
+                        <span class="text-xs font-extrabold text-[#3F6E4A] dark:text-[#C5E86C]">خريطة مبسطة لمناطق الدماغ الأربعة</span>
+                        <h4 class="text-base font-bold mt-1 mb-3">اضغط على كل منطقة لترى وظيفتها وماذا يحدث إذا تعثرت:</h4>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <button onclick="selectBrain('vwfa')" id="b-vwfa" class="b-btn p-3 rounded-xl bg-[#1C3325] text-[#C5E86C] font-bold text-right transition">
+                                1. صندوق الكلمات (VWFA)<br><span class="text-[10px] font-normal opacity-80">التعرف البصري السريع</span>
+                            </button>
+                            <button onclick="selectBrain('phon')" id="b-phon" class="b-btn p-3 rounded-xl bg-black/5 dark:bg-white/5 font-bold text-right transition">
+                                2. المنطقة الصدغية-الجدارية<br><span class="text-[10px] font-normal opacity-80">ربط الحرف بالصوت</span>
+                            </button>
+                            <button onclick="selectBrain('ips')" id="b-ips" class="b-btn p-3 rounded-xl bg-black/5 dark:bg-white/5 font-bold text-right transition">
+                                3. التلم الجداري (IPS)<br><span class="text-[10px] font-normal opacity-80">مركز الحس العددي والحساب</span>
+                            </button>
+                            <button onclick="selectBrain('exner')" id="b-exner" class="b-btn p-3 rounded-xl bg-black/5 dark:bg-white/5 font-bold text-right transition">
+                                4. باحة إكسنر الجبهية<br><span class="text-[10px] font-normal opacity-80">مركز حركة اليد والكتابة</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="brainInfoBox" class="p-4 rounded-2xl bg-[#1C3325] text-white text-xs space-y-1.5 leading-relaxed">
+                        <strong class="text-[#C5E86C] text-sm block">1. منطقة صندوق بريد الكلمات (VWFA - ديهين):</strong>
+                        <p><strong>عند التلميذ العادي:</strong> تتعرف على الكلمة المكتوبة كصورة كاملة في جزء من الثانية دون تهجئة.</p>
+                        <p class="text-emerald-200"><strong>عند تلميذ الديسليكسيا:</strong> يكون نشاطها ضعيفاً، فيضطر التلميذ لتهجئة الكلمة حرفاً بحرف ببطء شديد وكأنه يراها لأول مرة.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paragraph 2.2: Coltheart Dual-Route + Ramus vs Valdois -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="eco-card p-6 sm:p-7 space-y-4">
+                    <span class="para-badge">الفقرة 2.2 (أ) • كيف نقرأ الكلمات؟</span>
+                    <h3 class="text-lg sm:text-xl font-extrabold">نموذج المسارين في القراءة (Modèle à double voie - Coltheart)</h3>
+                    <p class="text-xs sm:text-sm opacity-90 leading-relaxed">
+                        يفسر العالم <strong>ماكس كولثارت (Max Coltheart)</strong> عملية القراءة بأن الدماغ يمتلك <strong>طريقين (مسارين)</strong> لقراءة أي كلمة، وإذا تعطل أحدهما تظهر الديسليكسيا:
+                    </p>
+                    <div class="space-y-3 text-xs">
+                        <div class="p-4 rounded-2xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30">
+                            <strong class="text-sm text-[#1C3325] dark:text-[#C5E86C] block mb-1">المسار الأول: المسار الفونولوجي أو التجميعي (Voie d'assemblage)</strong>
+                            <p class="leading-relaxed">
+                                هو "طريق التهجئة الصوتية": يفكك التلميذ الكلمة إلى حروف، يحول كل حرف إلى صوته، ثم يجمع الأصوات لينطق الكلمة. نستخدمه لقراءة <strong>الكلمات الجديدة أو الصعبة</strong>. إذا تعطل هذا المسار يصاب التلميذ بـ<strong>الديسليكسيا الفونولوجية</strong>.
+                            </p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30">
+                            <strong class="text-sm text-[#1C3325] dark:text-[#C5E86C] block mb-1">المسار الثاني: المسار المعجمي أو المباشر (Voie d'adressage)</strong>
+                            <p class="leading-relaxed">
+                                هو "طريق الذاكرة البصرية": يتعرف التلميذ على شكل الكلمة كاملة دفعة واحدة لأنها مخزنة في ذاكرته البصرية (مثل كلمات: <em>هذا، لكن، الله، Monsieur, Femme</em>). إذا تعطل هذا المسار يصاب التلميذ بـ<strong>الديسليكسيا السطحية (المعجمية)</strong>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eco-card p-6 sm:p-7 space-y-4">
+                    <span class="para-badge">الفقرة 2.2 (ب) • النقاش العلمي بين راموس وفالدوا</span>
+                    <h3 class="text-lg sm:text-xl font-extrabold">الفرضية الفونولوجية (راموس) مقابل العجز البصري-الانتباهي (فالدوا)</h3>
+                    <p class="text-xs sm:text-sm opacity-90 leading-relaxed">
+                        اختلف الباحثون حول السبب المعرفي الأول للديسليكسيا إلى مدرستين متكاملتين:
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div class="p-4 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 space-y-2">
+                            <span class="px-2 py-0.5 rounded bg-[#1C3325] text-[#C5E86C] font-bold">فرانك راموس (Franck Ramus)</span>
+                            <h4 class="font-bold text-sm">الفرضية الفونولوجية (الأصوات)</h4>
+                            <p class="leading-relaxed opacity-90">
+                                يرى أن المشكلة الأساسية عند أغلب أطفال الديسليكسيا هي ضعف <span onclick="explainTerm('phonology')" class="term-badge">الوعي الفونولوجي <i class="ph-bold ph-info"></i></span>؛ أي أن دماغ الطفل يجد صعوبة في تمييز الأصوات اللغوية وتقطيع الكلمة المسموعة إلى مقاطع وصوامت.
+                            </p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 space-y-2">
+                            <span class="px-2 py-0.5 rounded bg-[#3F6E4A] text-white font-bold">سيلفي فالدوا (Sylvie Valdois)</span>
+                            <h4 class="font-bold text-sm">فرضية المدى البصري-الانتباهي</h4>
+                            <p class="leading-relaxed opacity-90">
+                                أثبتت أن بعض الأطفال لديهم وعي صوتي سليم، لكن مشكلتهم هي <strong>ضيق نافذة الانتباه البصري (Empan visuo-attentionnel)</strong>؛ أي أن عينهم ودماغهم لا يستطيعان التقاط أكثر من حرفين أو ثلاثة في النظرة الواحدة.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paragraph 2.3 & 2.4: Dehaene Triple Code (Math) + Baddeley Working Memory -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- 2.3 Math Models -->
+                <div class="lg:col-span-7 eco-card p-6 sm:p-7 space-y-4">
+                    <span class="para-badge">الفقرة 2.3 • النماذج المعرفية المفسرة لعسر الحساب</span>
+                    <h3 class="text-lg sm:text-xl font-extrabold">نموذج "الحس العددي" ونموذج الترميز الثلاثي للأعداد (Stanislas Dehaene)</h3>
+                    <p class="text-xs sm:text-sm opacity-90 leading-relaxed">
+                        يؤكد ديهين أن الإنسان يولد بـ<strong>"حس عددي فطري" (Sens du nombre)</strong> يقع في منطقة تُسمى <strong>التلم داخل الفص الجداري (IPS)</strong>، وهي التي تسمح لنا بإدراك الكميات ومقارنتها. وحسب <strong>نموذج الترميز الثلاثي (Modèle du Triple Code)</strong>، يعالج الدماغ أي عدد بثلاث صور مختلفة:
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                        <div class="p-3.5 rounded-2xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30">
+                            <div class="text-lg font-black text-[#3F6E4A] dark:text-[#C5E86C]">•••••• (كمية)</div>
+                            <strong class="block mt-1">1. التمثيل الكمي التناظري:</strong>
+                            فهم مقدار العدد وحجمه وموقعه على مستقيم الأعداد الذهني (أين يقع في الدماغ؟ في التلم الجداري IPS).
+                        </div>
+                        <div class="p-3.5 rounded-2xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30">
+                            <div class="text-lg font-black text-[#3F6E4A] dark:text-[#C5E86C]">«ستة وثلاثون»</div>
+                            <strong class="block mt-1">2. التمثيل اللفظي السمعي:</strong>
+                            نطق اسم العدد بالكلمات وحفظ جدول الضرب لفظياً (يقع في المناطق اللغوية بالنصف الأيسر).
+                        </div>
+                        <div class="p-3.5 rounded-2xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30">
+                            <div class="text-lg font-black text-[#3F6E4A] dark:text-[#C5E86C] font-mono">36</div>
+                            <strong class="block mt-1">3. التمثيل العربي البصري:</strong>
+                            قراءة وكتابة الأرقام وفهم منزلة الوحدات والعشرات وإنجاز العمليات العمودية.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2.4 Working Memory (Baddeley) & Executive Functions -->
+                <div class="lg:col-span-5 eco-card p-6 sm:p-7 space-y-3">
+                    <span class="para-badge">الفقرة 2.4 • الذاكرة العاملة والوظائف التنفيذية</span>
+                    <h3 class="text-lg font-extrabold">نموذج الذاكرة العاملة لبادلي (Baddeley)</h3>
+                    <p class="text-xs opacity-90 leading-relaxed">
+                        <strong>الذاكرة العاملة (Mémoire de travail)</strong> هي "السبورة الذهنية المؤقتة" التي يحتفظ فيها التلميذ بالحروف أو الأرقام لبضع ثوانٍ ريثما يكمل القراءة أو الحساب. يقسمها العالم <strong>ألن بادلي</strong> إلى مكونات تتأثر بشدة في اضطرابات التعلم:
+                    </p>
+                    <ul class="space-y-2 text-xs">
+                        <li class="p-2.5 rounded-xl bg-black/5 dark:bg-white/5">
+                            <strong class="text-[#3F6E4A] dark:text-[#C5E86C]">1. الحلقة الفونولوجية (السمعية):</strong> تحفظ الأصوات مؤقتاً؛ ضعفها يجعل التلميذ ينسى أول الكلمة قبل أن يصل لآخرها!
+                        </li>
+                        <li class="p-2.5 rounded-xl bg-black/5 dark:bg-white/5">
+                            <strong class="text-[#3F6E4A] dark:text-[#C5E86C]">2. المفكرة البصرية-الفضائية:</strong> تحفظ أشكال الحروف ومواقع الأرقام والاحتفاظ في العمليات العمودية.
+                        </li>
+                        <li class="p-2.5 rounded-xl bg-black/5 dark:bg-white/5">
+                            <strong class="text-[#3F6E4A] dark:text-[#C5E86C]">3. المنفذ المركزي والوظائف التنفيذية:</strong> مسؤولة عن التركيز، التخطيط، وكبح التسرع أثناء حل المسائل.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             AXIS 03: DYSLEXIA IN PRIMARY CLASSROOM
+             Visual Inspiration: Aeline 3 Tall Vertical Cards (Image 1 Middle Section)
+        ========================================================= -->
+        <section id="axis3" class="section-animate scroll-mt-28 space-y-8">
+            <div class="axolotl-glass-strip p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-[#C5E86C] text-[#14261C]">المحور الثالث • AXE 03</span>
+                    <h2 class="text-2xl sm:text-3xl font-black mt-2">عسر القراءة (La Dyslexie) في القسم الابتدائي: المظاهر، الرصد، والتدخل</h2>
+                </div>
+                <div class="text-xs sm:text-sm text-emerald-100 max-w-md">
+                    يضم <strong>4 فقرات (3.1 إلى 3.4)</strong> تشمل الأنواع الثلاثة للديسليكسيا، أمثلة الأخطاء في العربية والفرنسية، شبكة الرصد، وطرق العلاج التربوي.
+                </div>
+            </div>
+
+            <!-- Paragraph 3.1: The 3 Clinical Types of Dyslexia (Aeline Tall Cards Style) -->
+            <div class="space-y-4">
+                <span class="para-badge">الفقرة 3.1 • الماهية والأنواع الإكلينيكية للديسليكسيا</span>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Type 1 -->
+                    <div class="tall-nature-card p-6 flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="w-12 h-12 rounded-2xl bg-[#C5E86C] text-[#14261C] flex items-center justify-center text-2xl font-bold">
+                                <i class="ph-duotone ph-waveform"></i>
+                            </div>
+                            <span class="text-xs font-bold text-[#C5E86C]">النوع الأول • الأكثر انتشاراً (حوالي 60%)</span>
+                            <h3 class="text-xl font-black">1. الديسليكسيا الفونولوجية (Phonologique)</h3>
+                            <p class="text-xs sm:text-sm text-emerald-100/90 leading-relaxed">
+                                تحدث عندما يتعطل <strong>مسار التهجئة الصوتية (التحويل من حرف إلى صوت)</strong>. يجد التلميذ صعوبة كبيرة في تفكيك الكلمات الجديدة إلى مقاطع صوتية، فيلجأ إلى قراءة أول حرفين ثم يخمن بقية الكلمة عشوائياً.
+                            </p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-black/30 border border-white/10 text-xs text-[#C5E86C]">
+                            <strong>كيف نعرفها في القسم؟</strong> التلميذ يقرأ الكلمات المألوفة البسيطة، لكنه يفشل تماماً في قراءة الكلمات الجديدة أو الطويلة.
+                        </div>
+                    </div>
+
+                    <!-- Type 2 -->
+                    <div class="tall-nature-card p-6 flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="w-12 h-12 rounded-2xl bg-[#C5E86C] text-[#14261C] flex items-center justify-center text-2xl font-bold">
+                                <i class="ph-duotone ph-eye"></i>
+                            </div>
+                            <span class="text-xs font-bold text-[#C5E86C]">النوع الثاني • بصري معجمي</span>
+                            <h3 class="text-xl font-black">2. الديسليكسيا السطحية أو المعجمية (De surface)</h3>
+                            <p class="text-xs sm:text-sm text-emerald-100/90 leading-relaxed">
+                                تحدث عندما يتعطل <strong>المسار المعجمي البصري المباشر</strong>. لا يستطيع التلميذ حفظ الصورة البصرية للكلمات في ذاكرته، فيضطر لتهجئة كل كلمة حرفاً بحرف ببطء شديد حتى لو قرأها عشرين مرة من قبل!
+                            </p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-black/30 border border-white/10 text-xs text-[#C5E86C]">
+                            <strong>كيف نعرفها في القسم؟</strong> يخطئ في قراءة الكلمات التي تُكتب ولا تُنطق حرفياً (مثل: <em>Monsieur, Femme</em> أو الكلمات غير المشكولة بالعربية).
+                        </div>
+                    </div>
+
+                    <!-- Type 3 -->
+                    <div class="tall-nature-card p-6 flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="w-12 h-12 rounded-2xl bg-[#C5E86C] text-[#14261C] flex items-center justify-center text-2xl font-bold">
+                                <i class="ph-duotone ph-intersect"></i>
+                            </div>
+                            <span class="text-xs font-bold text-[#C5E86C]">النوع الثالث • الحالة المركبة</span>
+                            <h3 class="text-xl font-black">3. الديسليكسيا المختلطة أو العميقة (Mixte)</h3>
+                            <p class="text-xs sm:text-sm text-emerald-100/90 leading-relaxed">
+                                هي الحالة الأشد لأنها تجمع بين <strong>إصابة المسار الصوتي والمسار البصري معاً</strong>. يعاني فيها المتعلم من صعوبة فك شفرة الحروف وصعوبة تذكر شكل الكلمات، مما يؤدي إلى ضياع الفهم القرائي كلياً.
+                            </p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-black/30 border border-white/10 text-xs text-[#C5E86C]">
+                            <strong>كيف نعرفها في القسم؟</strong> بطء شديد وأخطاء كثيرة في كل أنواع الكلمات مع إرهاق سريع وعجز عن فهم النص المقروء.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paragraph 3.2: Clinical Indicators & Examples in Arabic & French -->
+            <div class="eco-card p-6 sm:p-8 space-y-5">
+                <div>
+                    <span class="para-badge">الفقرة 3.2 • أمثلة واقعية من القسم المغربي (عربية وفرنسية)</span>
+                    <h3 class="text-xl sm:text-2xl font-extrabold mt-2">المؤشرات الإكلينيكية والأخطاء النمطية داخل الفصل الدراسي</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm">
+                    <div class="p-5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 space-y-2.5">
+                        <strong class="text-base text-[#3F6E4A] dark:text-[#C5E86C] block">1. أخطاء الخلط البصري (تشابه الرسم)</strong>
+                        <p class="opacity-85 text-xs">يخلط التلميذ بين الحروف التي تتشابه في الشكل وتختلف في النقاط أو الاتجاه:</p>
+                        <div class="p-3 rounded-xl bg-white dark:bg-black/30 space-y-1 text-xs">
+                            <div><strong>في العربية:</strong> (ب / ت / ث / ن) • (ج / ح / خ) • (ع / غ) • (ف / ق) • (ر / ز).</div>
+                            <div><strong>في الفرنسية:</strong> (b / d) • (p / q) • (m / n) • (u / n).</div>
+                            <div class="text-[#3F6E4A] dark:text-[#C5E86C] font-bold pt-1">مثال: يقرأ «بَـاب» ← «نَـاب» | «balle» ← «dalle»</div>
+                        </div>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 space-y-2.5">
+                        <strong class="text-base text-[#3F6E4A] dark:text-[#C5E86C] block">2. أخطاء الخلط السمعي (تقارب المخرج)</strong>
+                        <p class="opacity-85 text-xs">يخلط التلميذ بين الحروف المتقاربة في النطق الصوتي (المفخمة والمرققة أو المهموسة والمجهورة):</p>
+                        <div class="p-3 rounded-xl bg-white dark:bg-black/30 space-y-1 text-xs">
+                            <div><strong>في العربية:</strong> (س / ص) • (ت / ط) • (د / ض) • (ذ / ز / ظ) • (ك / ق).</div>
+                            <div><strong>في الفرنسية:</strong> (f / v) • (p / b) • (t / d) • (ch / j) • (s / z).</div>
+                            <div class="text-[#3F6E4A] dark:text-[#C5E86C] font-bold pt-1">مثال: يقرأ «سَـارَ» ← «صَـارَ» | «وطن» ← «وتن» | «vent» ← «fent»</div>
+                        </div>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 space-y-2.5">
+                        <strong class="text-base text-[#3F6E4A] dark:text-[#C5E86C] block">3. القلب، الحذف، الإضافة، والتخمين</strong>
+                        <p class="opacity-85 text-xs">يغير ترتيب الحروف داخل الكلمة أو يحذف بعضها أو يخمن الكلمة من أول حرف:</p>
+                        <div class="p-3 rounded-xl bg-white dark:bg-black/30 space-y-1 text-xs">
+                            <div><strong>القلب المكاني:</strong> يقرأ «مَـسْـجِـد» ← «مَـجْـسِـد» | «يرسم» ← «يسرم».</div>
+                            <div><strong>الحذف والتخمين:</strong> يقرأ «مَـدْرَسَـة» ← «مَـدَسَـة»، أو يرى «مُـسْـتَـشْـفَـى» فيقرؤها «مُـسْـتَـقْـبَـل».</div>
+                            <div class="text-amber-700 dark:text-amber-300 font-bold pt-1">النتيجة: ضياع معنى الجملة وضعف الفهم القرائي!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paragraph 3.3 & 3.4: Observation Grid + Didactic Remediation -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- 3.3 Teacher Role -->
+                <div class="lg:col-span-5 eco-card p-6 space-y-4">
+                    <span class="para-badge">الفقرة 3.3 • الرصد المبكر في القسم</span>
+                    <h3 class="text-lg font-extrabold">دور الأستاذ كراصد بيداغوجي أول (لا كمُشخّص طبي)</h3>
+                    <p class="text-xs leading-relaxed opacity-90">
+                        <strong>تنبيه منهجي لطالب ENS:</strong> الأستاذ في القسم لا يملك الصفة الطبية لإصدار تشخيص نهائي للديسليكسيا، بل دوره الأساسي هو <strong>الرصد البيداغوجي المبكر</strong> عبر شبكة ملاحظة دقيقة (استمرار الأخطاء لأكثر من 6 أشهر رغم الدعم)، ثم توجيه الأسرة نحو <strong>مختص تقويم النطق (Orthophoniste)</strong> لإجراء الفحص الإكلينيكي.
+                    </p>
+                    <div class="p-3.5 rounded-xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30 text-xs space-y-1">
+                        <strong class="block text-[#1C3325] dark:text-[#C5E86C]">أهم علامة يرصدها الأستاذ:</strong>
+                        عندما تطلب من التلميذ قراءة النص بنفسه لا يفهمه، ولكن عندما تقرأ له أنت نفس النص شفهياً يجيب عن جميع أسئلة الفهم بذكاء ممتاز!
+                    </div>
+                </div>
+
+                <!-- 3.4 Didactic Strategies + Live Syllabic Coloring -->
+                <div class="lg:col-span-7 eco-card p-6 space-y-4">
+                    <span class="para-badge">الفقرة 3.4 • الاستراتيجيات الديداكتيكية الداعمة للقراءة</span>
+                    <h3 class="text-lg font-extrabold">كيف نساعد التلميذ الديسليكسي داخل القسم؟</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div class="p-3.5 rounded-xl bg-black/5 dark:bg-white/5">
+                            <strong class="text-[#3F6E4A] dark:text-[#C5E86C] block mb-1">1. الوعي الفونولوجي والتدريس متعدد الحواس:</strong>
+                            • تدريب التلميذ على تقطيع الكلمات بالتصفيق.<br>
+                            • <strong>طريقة أورتن-غلينغهام (VAKT):</strong> إشراك البصر والسمع والحركة واللمس معاً (رسم الحرف في الرمل أو العجين مع نطقه).<br>
+                            • <strong>طريقة بوريل-ميزوني (Borel-Maisonny):</strong> ربط كل صوت بحركة يدوية مميزة تذكّر التلميذ بمخرج الحرف.
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-black/5 dark:bg-white/5">
+                            <strong class="text-[#3F6E4A] dark:text-[#C5E86C] block mb-1">2. تكييف ورقة القراءة (جرّب الأداة أسفله):</strong>
+                            • تكبير حجم الخط (16pt) وتوسيع المسافة بين السطور.<br>
+                            • استخدام <strong>التلوين المقطعي</strong> (كل مقطع صوتي بلون مختلف) ومسطرة تتبع السطر.
+                        </div>
+                    </div>
+
+                    <!-- Interactive Syllabic Text Tool -->
+                    <div class="p-4 rounded-2xl bg-[#1C3325] text-white space-y-2.5">
+                        <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+                            <span class="font-bold text-[#C5E86C]">تطبيق عملي لتكييف النص القرائي بالتلوين المقطعي:</span>
+                            <div class="flex gap-2">
+                                <button onclick="toggleSyllableView('normal')" class="px-3 py-1 rounded-full bg-white/15 hover:bg-white/25">نص عادي</button>
+                                <button onclick="toggleSyllableView('colored')" class="px-3 py-1 rounded-full bg-[#C5E86C] text-[#14261C] font-bold">نص ملون بالمقاطع الصوتية</button>
+                            </div>
+                        </div>
+                        <div id="syllableDemoBox" class="p-3.5 rounded-xl bg-white/10 text-base sm:text-lg font-bold tracking-wide leading-loose">
+                            <span class="text-[#C5E86C]">يَـسْـ</span><span class="text-sky-300">تَـيْـ</span><span class="text-[#C5E86C]">قِـظُ</span>
+                            <span class="mx-1.5"></span>
+                            <span class="text-sky-300">الْـفَـ</span><span class="text-[#C5E86C]">لّاحُ</span>
+                            <span class="mx-1.5"></span>
+                            <span class="text-sky-300">بَـا</span><span class="text-[#C5E86C]">كِـ</span><span class="text-sky-300">راً</span>
+                            <span class="mx-1.5"></span>
+                            <span class="text-[#C5E86C]">لِـيَـسْـ</span><span class="text-sky-300">قِـيَ</span>
+                            <span class="mx-1.5"></span>
+                            <span class="text-[#C5E86C]">أَشْـ</span><span class="text-sky-300">جَـا</span><span class="text-[#C5E86C]">رَ</span>
+                            <span class="mx-1.5"></span>
+                            <span class="text-sky-300">الْـبُـسْـ</span><span class="text-[#C5E86C]">تَـا</span><span class="text-sky-300">نِ.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             AXIS 04: DYSGRAPHIA & DYSORTHOGRAPHIA
+        ========================================================= -->
+        <section id="axis4" class="section-animate scroll-mt-28 space-y-8">
+            <div class="axolotl-glass-strip p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-[#C5E86C] text-[#14261C]">المحور الرابع • AXE 04</span>
+                    <h2 class="text-2xl sm:text-3xl font-black mt-2">عسر الكتابة (La Dysgraphie) وعسر الإملاء (La Dysorthographie)</h2>
+                </div>
+                <div class="text-xs sm:text-sm text-emerald-100 max-w-md">
+                    يضم <strong>4 فقرات (4.1 إلى 4.4)</strong> توضح الفرق بين مشكلة الخط الحركية ومشكلة الإملاء اللغوية مع أنشطة التأهيل الصفي.
+                </div>
+            </div>
+
+            <!-- Paragraph 4.1 & 4.2 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- 4.1 Distinction -->
+                <div class="eco-card p-6 sm:p-7 space-y-4">
+                    <span class="para-badge">الفقرة 4.1 • تفريق مفاهيمي دقيق</span>
+                    <h3 class="text-xl font-extrabold">الفرق بين الديسغرافيا (الحركية-الخطية) والديسأورطوغرافيا (الإملائية)</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div class="p-4 rounded-2xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30 space-y-1.5">
+                            <strong class="text-sm text-[#1C3325] dark:text-[#C5E86C] block">1. الديسغرافيا (Dysgraphie)</strong>
+                            <p class="leading-relaxed">
+                                هي اضطراب يمس <strong>حركة اليد وجودة رسم الحروف وتنظيمها على الورقة</strong> (المستوى الحركي-الخطي). قد يكتب التلميذ بخط رديء جداً وغير مقروء، لكن بدون أخطاء إملائية!
+                            </p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30 space-y-1.5">
+                            <strong class="text-sm text-[#1C3325] dark:text-[#C5E86C] block">2. الديسأورطوغرافيا (Dysorthographie)</strong>
+                            <p class="leading-relaxed">
+                                هي اضطراب يمس <strong>كتابة الكلمات إملائياً وتطبيق القواعد الصرفية والنحوية</strong> (المستوى اللغوي-الإملائي)، وهي غالباً الوجه الكتابي المرافق للديسليكسيا.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4.2 Motor Symptoms in Notebooks -->
+                <div class="eco-card p-6 sm:p-7 space-y-4">
+                    <span class="para-badge">الفقرة 4.2 • ماذا نلاحظ في دفتر التلميذ وجسده؟</span>
+                    <h3 class="text-xl font-extrabold">المظاهر الحركية والخطية للديسغرافيا في دفاتر المتعلمين</h3>
+                    <ul class="space-y-2 text-xs sm:text-sm">
+                        <li class="p-3 rounded-xl bg-black/5 dark:bg-white/5">
+                            • <strong>مسكة القلم والتشنج العضلي:</strong> إمساك القلم بطريقة خاطئة ومتصلبة، ضغط شديد يمزق الورقة (أو خط باهت جداً)، وألم سريع في الأصابع والمعصم.
+                        </li>
+                        <li class="p-3 rounded-xl bg-black/5 dark:bg-white/5">
+                            • <strong>اختلال حجم الحروف والسطر:</strong> حروف كبيرة جداً بجانب حروف صغيرة، الخروج المستمر عن السطر، وتداخل الكلمات.
+                        </li>
+                        <li class="p-3 rounded-xl bg-black/5 dark:bg-white/5">
+                            • <strong>بطء شديد في النقل:</strong> يعجز التلميذ عن إكمال نقل الدرس من السبورة في الوقت المحدد.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Paragraph 4.3 & 4.4 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- 4.3 Spelling Errors in Arabic & French -->
+                <div class="eco-card p-6 sm:p-7 space-y-4">
+                    <span class="para-badge">الفقرة 4.3 • أخطاء الإملاء في اللغتين العربية والفرنسية</span>
+                    <h3 class="text-xl font-extrabold">المظاهر الإملائية (الديسأورطوغرافيا)</h3>
+                    <div class="space-y-3 text-xs">
+                        <div class="p-3.5 rounded-xl bg-black/5 dark:bg-white/5">
+                            <strong class="text-[#3F6E4A] dark:text-[#C5E86C] block mb-1">في اللغة العربية:</strong>
+                            • <strong>حذف حروف المد أو إضافتها:</strong> يكتب «كِتَاب» ← «كتب» أو يكتب «لَهُ» ← «لاهو».<br>
+                            • <strong>كتابة التنوين نوناً:</strong> يكتب «مَدْرَسَةٌ» ← «مدرستن» أو «قَلَمٌ» ← «قلمن».<br>
+                            • <strong>الخلط بين التاء المربوطة والمبسوطة والهاء، وإسقاط اللام الشمسية:</strong> «الشمس» ← «اشمس».
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-black/5 dark:bg-white/5">
+                            <strong class="text-[#3F6E4A] dark:text-[#C5E86C] block mb-1">في اللغة الفرنسية:</strong>
+                            • <strong>الكتابة الصوتية الساذجة (يكتب الكلمة كما يسمعها):</strong> يكتب «bateau» ← «bato»، و«maison» ← «mézon».<br>
+                            • <strong>الدمج أو الفصل الخاطئ للكلمات:</strong> «l'école» ← «lékole»، وإغفال علامات الجمع (s / nt).
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4.4 Pedagogical Intervention for Writing -->
+                <div class="eco-card p-6 sm:p-7 space-y-4">
+                    <span class="para-badge">الفقرة 4.4 • كيف نؤهل الكتابة في القسم؟</span>
+                    <h3 class="text-xl font-extrabold">التدخل البيداغوجي والأنشطة الصفية لتأهيل الفعل الكتابي</h3>
+                    <div class="space-y-2.5 text-xs">
+                        <div class="p-3 rounded-xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30">
+                            <strong>1. التهيئة الحس-حركية والتآزر البصري-اليدوي:</strong> تمارين استرخاء الأصابع والكتف قبل الكتابة، التشكيل بالعجين، واستخدام <strong>مقبض القلم السيليكوني المثلث (Grip)</strong> لتصحيح المسكة.
+                        </div>
+                        <div class="p-3 rounded-xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30">
+                            <strong>2. استراتيجية التشفير اللوني للسطور:</strong> تلوين سطر الكتابة بالأخضر (العشب)، والخط العلوي بالأزرق (السماء للحروف الصاعدة كالألف واللام)، والخط السفلي بالبني (التراب للحروف النازلة كالراء والواو).
+                        </div>
+                        <div class="p-3 rounded-xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30">
+                            <strong>3. التخفيف من العبء الكتابي:</strong> إعفاء التلميذ من النسخ الطويل المرهق، تزويده بملخصات مطبوعة، وتعويض الكتابة الطويلة بتمارين (صل بخط، ضع علامة، ملء الفراغ، أو الإجابة الشفهية).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             AXIS 05: DYSCALCULIA IN PRIMARY EDUCATION
+        ========================================================= -->
+        <section id="axis5" class="section-animate scroll-mt-28 space-y-8">
+            <div class="axolotl-glass-strip p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-[#C5E86C] text-[#14261C]">المحور الخامس • AXE 05</span>
+                    <h2 class="text-2xl sm:text-3xl font-black mt-2">عسر الحساب (La Dyscalculie) في التعليم الابتدائي: من الحس العددي إلى حل المسائل</h2>
+                </div>
+                <div class="text-xs sm:text-sm text-emerald-100 max-w-md">
+                    يضم <strong>3 فقرات مفصلة (5.1 إلى 5.3)</strong> مع مختبر تفاعلي لمنهجية برونر (CPA: المحسوس - شبه المحسوس - المجرد).
+                </div>
+            </div>
+
+            <!-- Paragraph 5.1 & 5.2 -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- 5.1 Concept vs Math Anxiety -->
+                <div class="lg:col-span-4 eco-card p-6 space-y-3">
+                    <span class="para-badge">الفقرة 5.1 • المفهوم والفرز</span>
+                    <h3 class="text-lg font-extrabold">مفهوم الديسكالكوليا النمائية وفرزها عن "قلق الرياضيات"</h3>
+                    <p class="text-xs sm:text-sm opacity-90 leading-relaxed text-justify">
+                        <strong>الديسكالكوليا النمائية</strong> هي اضطراب عصبي فطري يصيب القدرة على فهم الأعداد والكميات وإجراء العمليات الحسابية رغم ذكاء التلميذ العادي.
+                    </p>
+                    <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs">
+                        <strong class="text-amber-800 dark:text-amber-300 block mb-1">الفرق عن "قلق الرياضيات" (Anxiété mathématique):</strong>
+                        قلق الرياضيات هو خوف نفسي مكتسب (بسبب تجربة سلبية أو خوف من الامتحان) مع سلامة الفهم العددي، بينما الديسكالكوليا هي خلل عصبي في إدراك معنى العدد نفسه منذ الصغر.
+                    </div>
+                </div>
+
+                <!-- 5.2 The 5 Classroom Symptoms -->
+                <div class="lg:col-span-8 eco-card p-6 space-y-4">
+                    <span class="para-badge">الفقرة 5.2 • التجليات الخمسة في القسم الابتدائي</span>
+                    <h3 class="text-lg sm:text-xl font-extrabold">كيف يظهر عسر الحساب داخل حصة الرياضيات؟</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div class="p-3.5 rounded-xl bg-black/5 dark:bg-white/5">
+                            <strong class="text-[#3F6E4A] dark:text-[#C5E86C] block mb-1">1. العجز عن التقدير الكمي الفوري (<span onclick="explainTerm('subitizing')" class="term-badge">Subitizing <i class="ph-bold ph-info"></i></span>):</strong>
+                            عندما ترى 3 نقاط (•••) تعرف فوراً أنها 3 دون عدّ؛ أما التلميذ المصاب بالديسكالكوليا فيضطر لعدّها نقطة بنقطة بأصبعه، ويعجز عن معرفة أيهما أكبر (8 أم 5).
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-black/5 dark:bg-white/5">
+                            <strong class="text-[#3F6E4A] dark:text-[#C5E86C] block mb-1">2. خطأ الانتقال من اللفظي إلى الرقمي (Transcodage):</strong>
+                            عندما يملي الأستاذ: <strong>«خمسمائة وثلاثة»</strong> يكتبها التلميذ كما سمعها حرفياً: <span class="font-mono font-black text-rose-600 dark:text-rose-400">5003</span> بدلاً من <span class="font-mono font-black text-emerald-600 dark:text-[#C5E86C]">503</span>!
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-black/5 dark:bg-white/5">
+                            <strong class="text-[#3F6E4A] dark:text-[#C5E86C] block mb-1">3. الكتابة المرآتية للأرقام وعكس القراءة:</strong>
+                            كتابة الأرقام معكوسة (3، 5، 7) أو قراءة وكتابة العدد <span class="font-mono font-bold">26</span> على أنه <span class="font-mono font-bold">62</span>.
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-black/5 dark:bg-white/5">
+                            <strong class="text-[#3F6E4A] dark:text-[#C5E86C] block mb-1">4. اختلال القيمة المكانية والاحتفاظ وجدول الضرب:</strong>
+                            عدم التمييز بين منزلة الوحدات والعشرات والمئات، نسيان الاحتفاظ والاستلاف، والعجز التام عن حفظ جدول الضرب أو حل المسائل المركبة.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paragraph 5.3: Interactive CPA Bruner Lab -->
+            <div class="eco-card p-6 sm:p-8 space-y-5 border-2 border-[#3F6E4A]/40">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="para-badge">الفقرة 5.3 • الديداكتيك العلاجي في الرياضيات (تفاعلي)</span>
+                        <h3 class="text-xl font-extrabold mt-2">تطبيق منهجية برونر (CPA: المحسوس ← شبه المحسوس ← المجرد) لتصحيح خطأ (5003)</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="setCPA('c')" id="cpa-c" class="px-4 py-2 rounded-full text-xs font-extrabold bg-[#1C3325] text-[#C5E86C] transition">1. المحسوس (Concrete)</button>
+                        <button onclick="setCPA('p')" id="cpa-p" class="px-4 py-2 rounded-full text-xs font-bold bg-black/10 dark:bg-white/10 transition">2. شبه المحسوس (Pictorial)</button>
+                        <button onclick="setCPA('a')" id="cpa-a" class="px-4 py-2 rounded-full text-xs font-bold bg-black/10 dark:bg-white/10 transition">3. المجرد (Abstract)</button>
+                    </div>
+                </div>
+
+                <div id="cpaBox" class="p-5 rounded-2xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    <div class="md:col-span-7 space-y-2">
+                        <strong class="text-base text-[#1C3325] dark:text-[#C5E86C] block">المرحلة 1: المحسوس الملموس باليد (مكعبات دينز Dienes والمعداد)</strong>
+                        <p class="text-xs sm:text-sm leading-relaxed">
+                            لمعالجة خطأ التلميذ الذي يكتب «خمسمائة وثلاثة» على شكل (5003)، نعطيه <strong>مكعبات دينز الخشبية</strong> يلمسها بيده: يضع <strong>5 صفائح مئات</strong>، ويرى أن علبة <strong>العشرات فارغة تماماً (صفر)</strong>، ويضع <strong>3 مكعبات صغيرة للوحدات</strong>. هكذا يفهم حسياً معنى الصفر والقيمة المكانية.
+                        </p>
+                    </div>
+                    <div class="md:col-span-5 p-4 rounded-xl bg-[#1C3325] text-white text-center">
+                        <div class="text-xs text-[#C5E86C] font-bold mb-2">تمثيل مكعبات دينز للعدد 503</div>
+                        <div class="text-2xl font-black tracking-widest">5 مئات | 0 عشرات | 3 وحدات</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             AXIS 06: PSYCHOSOCIAL IMPACT & INCLUSIVE PEDAGOGY IN MOROCCO
+        ========================================================= -->
+        <section id="axis6" class="section-animate scroll-mt-28 space-y-8">
+            <div class="axolotl-glass-strip p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-[#C5E86C] text-[#14261C]">المحور السادس • AXE 06</span>
+                    <h2 class="text-2xl sm:text-3xl font-black mt-2">الانعكاسات النفسية-الاجتماعية وهندسة التدخل البيداغوجي الدامج</h2>
+                </div>
+                <div class="text-xs sm:text-sm text-emerald-100 max-w-md">
+                    يضم <strong>3 فقرات (6.1 إلى 6.3)</strong> حول العجز المتعلم، الترافق المرضي (TDAH & Dyspraxie)، والمشروع البيداغوجي الفردي (PPI) بالمغرب.
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Paragraph 6.1 -->
+                <div class="eco-card p-6 space-y-3">
+                    <span class="para-badge">الفقرة 6.1 • الآثار النفسية</span>
+                    <h3 class="text-lg font-extrabold">دائرة الفشل وظاهرة "العجز المتعلم" (Seligman)</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed opacity-90 text-justify">
+                        عندما يجتهد التلميذ المصاب باضطراب التعلم ولا يحصد سوى السخرية والنقط الضعيفة، يصاب بما سماه العالم <strong>مارتن سيلغمان (Martin Seligman)</strong> بـ<span onclick="explainTerm('helplessness')" class="term-badge">العجز المتعلم <i class="ph-bold ph-info"></i></span>؛ أي أنه يقتنع داخلياً بأنه "غبي ولا فائدة من المحاولة"، فيستسلم تماماً، وتظهر لديه أعراض <strong>القلق المدرسي، فوبيا المدرسة، والانطواء أو العدوانية التعويضية (الشغب في القسم للهروب من الإحراج)</strong>.
+                    </p>
+                </div>
+
+                <!-- Paragraph 6.2 -->
+                <div class="eco-card p-6 space-y-3">
+                    <span class="para-badge">الفقرة 6.2 • الترافق المرضي (La Comorbidité)</span>
+                    <h3 class="text-lg font-extrabold">تقاطع اضطرابات التعلم مع (TDAH) و(Dyspraxie)</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed opacity-90 text-justify">
+                        <strong>الترافق المرضي (Comorbidité)</strong> يعني وجود أكثر من اضطراب نمائي لدى نفس الطفل في آن واحد (يحدث في 40% من الحالات):
+                    </p>
+                    <ul class="text-xs space-y-1.5">
+                        <li class="p-2.5 rounded-xl bg-black/5 dark:bg-white/5">
+                            • <strong>مع اضطراب تشتت الانتباه وفرط الحركة (TDAH):</strong> تلميذ يعاني من الديسليكسيا ومعها أيضاً تشتت انتباه واندفاع حركي.
+                        </li>
+                        <li class="p-2.5 rounded-xl bg-black/5 dark:bg-white/5">
+                            • <strong>مع اضطراب التآزر الحركي (<span onclick="explainTerm('dyspraxia')" class="term-badge">الديسپراكسيا Dyspraxie <i class="ph-bold ph-info"></i></span>):</strong> صعوبة في تخطيط الحركات الدقيقة تزيد من حدة الديسغرافيا وصعوبة استعمال المسطرة والبركار.
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Paragraph 6.3 -->
+                <div class="eco-card p-6 space-y-3 border-2 border-[#3F6E4A]">
+                    <span class="para-badge">الفقرة 6.3 • السياق التربوي المغربي</span>
+                    <h3 class="text-lg font-extrabold">التربية الدامجة والمشروع البيداغوجي الفردي (PPI)</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed opacity-90">
+                        وفق <strong>الإطار المرجعي للتربية الدامجة بالمغرب (2019)</strong>، يستفيد هذا المتعلم من:
+                    </p>
+                    <ul class="text-xs space-y-1.5">
+                        <li>• <strong>المشروع البيداغوجي الفردي (PPI):</strong> خطة تكييف خاصة بكل متعلم.</li>
+                        <li>• <strong>تكييف الامتحانات:</strong> توفير <strong>قارئ مرافق</strong> يقرأ له الأسئلة، وإضافة <strong>ثلث الوقت (1/3 Temps)</strong>، وعدم محاسبته على الخط أو الأخطاء الإملائية في المواد العلمية.</li>
+                        <li>• <strong>الشراكة متعددة التخصصات:</strong> تعاون الأستاذ + الأسرة + مختص تقويم النطق (Orthophoniste) + الأخصائي النفسي العصبي.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             CONCLUSION & PRACTICAL CHARTER FOR PRIMARY TEACHERS
+        ========================================================= -->
+        <section id="conclusion" class="section-animate scroll-mt-28 space-y-8">
+            <div class="eco-card p-6 sm:p-10 space-y-6">
+                <div class="border-b border-black/10 dark:border-white/10 pb-4">
+                    <span class="para-badge">خاتمة عامة وتوصيات إجرائية</span>
+                    <h2 class="text-2xl sm:text-3xl font-black mt-2">خلاصة تركيبية وميثاق عمل تطبيقي لأستاذ التعليم الابتدائي</h2>
+                </div>
+
+                <p class="text-sm sm:text-base leading-relaxed opacity-90 text-justify">
+                    خلاصة القول، إن اضطرابات التعلم النمائية والأكاديمية (الديسليكسيا، الديسغرافيا، الديسكالكوليا) ليست ضعفاً في الذكاء ولا كسلاً مدرسياً، بل هي <strong>اختلاف في البرمجة العصبية للدماغ</strong>. وإن نجاح المدرسة الابتدائية الدامجة رهين بقدرة الأستاذ على الرصد المبكر، وتجنب الوصم، وتنويع الوسائل الحسية، وتكييف التقويم بشراكة مع الأسرة والمختصين.
+                </p>
+
+                <!-- 6 Golden Rules Charter -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+                    <div class="p-4 rounded-2xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30">
+                        <strong class="text-sm text-[#1C3325] dark:text-[#C5E86C] block mb-1">1. لا تتسرع في الحكم والوصم</strong>
+                        إياك ونعت التلميذ بـ"الكسول أو الغبي"؛ تذكر أن ذكاءه سليم تماماً وأن تعثره لا إرادي.
+                    </div>
+                    <div class="p-4 rounded-2xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30">
+                        <strong class="text-sm text-[#1C3325] dark:text-[#C5E86C] block mb-1">2. ارصد مبكراً ووجّه للمختص</strong>
+                        سجّل نوع الأخطاء المتكررة لأكثر من 6 أشهر، ووجّه الأسرة بلطف لزيارة مختص تقويم النطق (Orthophoniste).
+                    </div>
+                    <div class="p-4 rounded-2xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30">
+                        <strong class="text-sm text-[#1C3325] dark:text-[#C5E86C] block mb-1">3. درّس بالحواس المتعددة (VAKT & CPA)</strong>
+                        استعمل الألوان، الحركات اليدوية، العجين، ومكعبات العد الملموسة بدلاً من التجريد اللفظي الجاف.
+                    </div>
+                    <div class="p-4 rounded-2xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30">
+                        <strong class="text-sm text-[#1C3325] dark:text-[#C5E86C] block mb-1">4. خفف عبء القراءة الجهرية والنسخ</strong>
+                        لا تحرجه بالقراءة المفاجئة أمام القسم، وقلل من النسخ الطويل عن السبورة.
+                    </div>
+                    <div class="p-4 rounded-2xl bg-[#3F6E4A]/10 border border-[#3F6E4A]/30">
+                        <strong class="text-sm text-[#1C3325] dark:text-[#C5E86C] block mb-1">5. كيّف الفروض والامتحانات</strong>
+                        اقرأ له الأسئلة شفهياً، امنحه وقتاً إضافياً، وقيّم فهمه للمضمون لا جودة خطه.
+                    </div>
+                    <div class="p-4 rounded-2xl bg-[#C5E86C] text-[#14261C] font-semibold">
+                        <strong class="text-sm block mb-1">6. عزّز ثقته بنفسه يومياً</strong>
+                        ثبّت نجاحاته الشفهية والفنية أمام زملائه لتحميه من "العجز المتعلم" والانقطاع عن الدراسة.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- =========================================================
+         MODAL 1: SIMPLE GLOSSARY FOR S3 STUDENTS (قاموس المصطلحات المبسط)
+    ========================================================= -->
+    <div id="glossaryModal" class="fixed inset-0 z-[70] hidden items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+        <div class="eco-card max-w-2xl w-full p-6 sm:p-8 space-y-4 max-h-[85vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-3">
+                <div>
+                    <span class="para-badge">دليل الطالب (S3 - ENS)</span>
+                    <h3 class="text-xl font-black mt-1">قاموس المصطلحات العلمية مشروحاً بالدارجة والعربية المبسطة</h3>
+                </div>
+                <button onclick="closeGlossaryModal()" class="w-8 h-8 rounded-full bg-black/10 dark:bg-white/10 flex items-center justify-center font-bold">✕</button>
+            </div>
+
+            <div class="space-y-2.5 text-xs sm:text-sm" id="glossaryList">
+                <div class="p-3.5 rounded-xl bg-black/5 dark:bg-white/5">
+                    <strong class="text-[#3F6E4A] dark:text-[#C5E86C]">1. الديسليكسيا (La Dyslexie = عسر القراءة):</strong>
+                    اضطراب عصبي يجعل التلميذ الذكي يخلط بين الحروف المتشابهة (ب/ت، س/ص، b/d) ويقرأ ببطء وتقطع شديدين.
+                </div>
+                <div class="p-3.5 rounded-xl bg-black/5 dark:bg-white/5">
+                    <strong class="text-[#3F6E4A] dark:text-[#C5E86C]">2. الديسغرافيا (La Dysgraphie = عسر الكتابة الحركي):</strong>
+                    اضطراب في حركة اليد والأصابع أثناء الكتابة؛ يظهر في تشنج اليد، خروج الحروف عن السطر، ورداءة الخط.
+                </div>
+                <div class="p-3.5 rounded-xl bg-black/5 dark:bg-white/5">
+                    <strong class="text-[#3F6E4A] dark:text-[#C5E86C]">3. الديسأورطوغرافيا (La Dysorthographie = عسر الإملاء):</strong>
+                    اضطراب في كتابة الكلمات بشكل صحيح إملائياً (حذف المدود، كتابة التنوين نوناً، وعدم القدرة على تطبيق القواعد).
+                </div>
+                <div class="p-3.5 rounded-xl bg-black/5 dark:bg-white/5">
+                    <strong class="text-[#3F6E4A] dark:text-[#C5E86C]">4. الديسكالكوليا (La Dyscalculie = عسر الحساب):</strong>
+                    اضطراب عصبي في فهم الأعداد والكميات؛ التلميذ لا يدرك قيمة الرقم ولا يستطيع حفظ جدول الضرب أو ترتيب الأعداد.
+                </div>
+                <div class="p-3.5 rounded-xl bg-black/5 dark:bg-white/5">
+                    <strong class="text-[#3F6E4A] dark:text-[#C5E86C]">5. الوعي الفونولوجي (Conscience Phonologique = الوعي الصوتي):</strong>
+                    قدرة الطفل على سماع الكلمة وتفكيكها في ذهنه إلى مقاطع وأصوات صغيرة (مثلاً يدرك أن كلمة «قلم» تتكون من 3 أصوات: قَ - لَ - م).
+                </div>
+                <div class="p-3.5 rounded-xl bg-black/5 dark:bg-white/5">
+                    <strong class="text-[#3F6E4A] dark:text-[#C5E86C]">6. التقدير الكمي الفوري (Subitizing):</strong>
+                    القدرة على معرفة عدد الأشياء القليلة (من 1 إلى 4) بنظرة عين سريعة دون الحاجة إلى عدّها واحداً واحداً بالأصبع.
+                </div>
+                <div class="p-3.5 rounded-xl bg-black/5 dark:bg-white/5">
+                    <strong class="text-[#3F6E4A] dark:text-[#C5E86C]">7. الديسپراكسيا (La Dyspraxie = اضطراب التآزر الحركي):</strong>
+                    صعوبة في تنسيق وتخطيط الحركات الدقيقة (مثل مسك القلم، التسطير بالمسطرة، استعمال المقص أو البركار).
+                </div>
+                <div class="p-3.5 rounded-xl bg-black/5 dark:bg-white/5">
+                    <strong class="text-[#3F6E4A] dark:text-[#C5E86C]">8. العجز المتعلم (Impuissance Apprise - Seligman):</strong>
+                    استسلام التلميذ وفقدانه الثقة بنفسه بسبب تكرار الفشل، فيعتقد أن أي مجهود يبذله لن يغير شيئاً.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         MODAL 2: LIVE DYSLEXIA SIMULATOR
+    ========================================================= -->
+    <div id="simulatorModal" class="fixed inset-0 z-[70] hidden items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+        <div class="eco-card max-w-xl w-full p-6 sm:p-8 space-y-4">
+            <div class="flex items-center justify-between">
+                <span class="para-badge">تجربة عملية للقسم</span>
+                <button onclick="closeSimulatorModal()" class="w-8 h-8 rounded-full bg-black/10 dark:bg-white/10 flex items-center justify-center font-bold">✕</button>
+            </div>
+            <h3 class="text-xl font-black">هكذا يرى التلميذ المصاب بالديسليكسيا الكلمات غير المكيّفة:</h3>
+            <div class="p-5 rounded-2xl bg-[#1C3325] text-[#C5E86C] text-lg font-bold leading-loose">
+                <p id="simText">يحتاج التلميذ الذي يعاني من عسر القراءة إلى تفهم الأستاذ وتكييف النص القرائي.</p>
+            </div>
+            <p class="text-xs opacity-80">
+                لاحظ كيف تتبدل الحروف المتشابهة (ت/ث/ب، ع/غ، ق/ف) في عين التلميذ أثناء محاولته القراءة، لذلك فهو يقرأ ببطء شديد لأنه يبذل مجهوداً مضاعفاً لتثبيت الحروف!
+            </p>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         MODAL 3: INSTALL ON PHONE/PC & OFFLINE MODE (تثبيت وتشغيل بدون إنترنت)
+    ========================================================= -->
+    <div id="installModal" class="fixed inset-0 z-[75] hidden items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+        <div class="eco-card max-w-xl w-full p-6 sm:p-8 space-y-5 max-h-[88vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="para-badge">يعمل بدون إنترنت • 100% Offline</span>
+                    <span id="netStatusBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-[#C5E86C] border border-[#C5E86C]/30">جاهز للتخزين</span>
+                </div>
+                <button onclick="closeInstallModal()" class="w-8 h-8 rounded-full bg-black/10 dark:bg-white/10 flex items-center justify-center font-bold">✕</button>
+            </div>
+
+            <div class="space-y-2">
+                <h3 class="text-xl font-black">تثبيت العرض على الهاتف أو الحاسوب وتشغيله بدون إنترنت</h3>
+                <p class="text-xs sm:text-sm opacity-90 leading-relaxed">
+                    يمكنك تثبيت هذا العرض كتطبيق مستقل على هاتفك أو حاسوبك، أو تحميل نسخة محمولة منه لتشغيلها داخل قاعة العرض بالكلية (ENS) حتى لو لم يكن هناك اتصال بالإنترنت:
+                </p>
+            </div>
+
+            <!-- Primary Actions -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- Direct PWA Install Button -->
+                <button onclick="triggerDirectPWAInstall()" class="p-4 rounded-2xl bg-[#C5E86C] text-[#14261C] font-extrabold text-right flex items-center gap-3 hover:brightness-105 transition shadow-lg">
+                    <div class="w-10 h-10 rounded-xl bg-[#14261C] text-[#C5E86C] flex items-center justify-center text-xl shrink-0">
+                        <i class="ph-bold ph-device-mobile-speaker"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm">1. تثبيت مباشر كتطبيق (PWA)</div>
+                        <div class="text-[11px] font-medium opacity-80">للأندرويد والحاسوب (Chrome / Edge)</div>
+                    </div>
+                </button>
+
+                <!-- Download Standalone Offline HTML File -->
+                <button onclick="downloadOfflineFile()" class="p-4 rounded-2xl bg-[#1C3325] text-white border border-[#C5E86C]/40 font-extrabold text-right flex items-center gap-3 hover:border-[#C5E86C] transition shadow-lg">
+                    <div class="w-10 h-10 rounded-xl bg-[#C5E86C] text-[#14261C] flex items-center justify-center text-xl shrink-0">
+                        <i class="ph-bold ph-file-html"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm text-[#C5E86C]">2. حفظ نسخة Offline مستقلة</div>
+                        <div class="text-[11px] font-normal text-emerald-100/80">ملف واحد يعمل في أي حاسوب أو هاتف</div>
+                    </div>
+                </button>
+            </div>
+
+            <div id="installStatusMsg" class="hidden p-3.5 rounded-xl bg-[#C5E86C]/20 border border-[#C5E86C] text-xs font-bold text-[#C5E86C]"></div>
+
+            <!-- Step-by-step Guide for Phone & PC -->
+            <div class="space-y-2.5 text-xs">
+                <div class="p-3.5 rounded-xl bg-black/10 dark:bg-white/5 space-y-1">
+                    <strong class="text-[#3F6E4A] dark:text-[#C5E86C] block">📱 على الهاتف (Android & iPhone):</strong>
+                    • اضغط على زر <strong>"تثبيت مباشر كتطبيق"</strong> أعلاه، أو من قائمة المتصفح (⋮) اختر <strong>"الإضافة إلى الشاشة الرئيسية / Ajouter à l'écran d'accueil"</strong>.<br>
+                    • يمكنك أيضاً الضغط على <strong>"حفظ نسخة Offline مستقلة"</strong> ليبقى الملف محفوظاً في ملفات هاتفك وتفتحه في أي وقت بدون إنترنت.
+                </div>
+                <div class="p-3.5 rounded-xl bg-black/10 dark:bg-white/5 space-y-1">
+                    <strong class="text-[#3F6E4A] dark:text-[#C5E86C] block">💻 على الحاسوب (PC للعرض بـ Data Show في القسم):</strong>
+                    • اضغط على <strong>"حفظ نسخة Offline مستقلة"</strong> وضع الملف في مفتاح USB أو على سطح المكتب (Desktop)، وعند النقر عليه مرتين يفتح فوراً بكامل حركاته التفاعلية.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clean, Bug-Free JavaScript -->
+    <script>
+        // 1. Historical Stations Data (Axis 1.1)
+        const histDetails = [
+            {
+                title: "المحطة 1 (1877) — أدولف كوسماول (Adolph Kussmaul):",
+                text: "طبيب ألماني لاحظ أن بعض الأشخاص الأذكياء يفقدون القدرة على قراءة الكلمات المكتوبة رغم أن بصرهم سليم تماماً، فأطلق عليها اسم «العمى اللفظي» (Cécité verbale)."
+            },
+            {
+                title: "المحطة 2 (1896 - 1917) — مورغان وهينشلوود (Morgan & Hinshelwood):",
+                text: "وصفا حالة الطفل الذكي (بيرسي Percy) الذي كان متفوقاً في الحساب الشفهي لكنه يعجز عن قراءة الكلمات، وسمّيا الحالة «العمى اللفظي الخلقي» أي المولود مع الطفل."
+            },
+            {
+                title: "المحطة 3 (1925) — صموئيل أورتن (Samuel Orton):",
+                text: "لاحظ أن هؤلاء الأطفال يقلبون الحروف المتشابهة مثل (b و d) و(p و q)، واقترح تعليمهم عبر إشراك جميع الحواس (البصر، السمع، واللمس اليدوي)."
+            },
+            {
+                title: "المحطة 4 (1963) — صموئيل كيرك (Samuel Kirk):",
+                text: "هو الأب الروحي للمصطلح التربوي الحديث؛ حيث اقترح في مؤتمر شيكاغو سنة 1963 مصطلح «اضطرابات التعلم» (Learning Disabilities) ليخرج هؤلاء الأطفال من دائرة الإعاقة الذهنية."
+            },
+            {
+                title: "المحطة 5 (العصر الحديث) — الدلائل العالمية DSM-5-TR و CIM-11:",
+                text: "تصنفها اليوم كـ«اضطرابات عصبية نمائية» وتؤكد أنه لا يمكن الحكم على التلميذ إلا بعد تقديم دعم تربوي خاص له لمدة 6 أشهر على الأقل."
+            }
+        ];
+
+        function showHistoryDetail(idx) {
+            const cards = document.querySelectorAll('.hist-card');
+            cards.forEach((c, i) => {
+                if (i === idx) {
+                    c.className = "hist-card cursor-pointer p-4 rounded-2xl bg-[#3F6E4A]/15 border-2 border-[#3F6E4A] transition";
+                } else {
+                    c.className = "hist-card cursor-pointer p-4 rounded-2xl bg-black/5 dark:bg-white/5 border border-transparent hover:border-[#3F6E4A] transition";
+                }
+            });
+            document.getElementById('historyBox').innerHTML = `
+                <strong class="text-[#C5E86C] block mb-1">${histDetails[idx].title}</strong>
+                ${histDetails[idx].text}
+            `;
+        }
+
+        // 2. Brain Interactive Explorer (Axis 2.1)
+        const brainData = {
+            vwfa: {
+                title: "1. منطقة صندوق بريد الكلمات (VWFA - ستانيسلاس ديهين):",
+                normal: "تتعرف على الكلمة المكتوبة كصورة كاملة في جزء من الثانية دون الحاجة لتهجئتها حرفاً بحرف.",
+                dys: "عند تلميذ الديسليكسيا يكون نشاطها ضعيفاً، فيقرأ ببطء شديد ويخلط بين الحروف المعكوسة (b/d)."
+            },
+            phon: {
+                title: "2. المنطقة الصدغية-الجدارية اليسرى (ربط الحرف بالصوت):",
+                normal: "تحول شكل الحرف المكتوب على الورقة إلى صوته المنطوق وتدمج المقاطع الصوتية.",
+                dys: "ضعفها يسبب «الديسليكسيا الفونولوجية» حيث يعجز التلميذ عن تهجئة الكلمات الجديدة."
+            },
+            ips: {
+                title: "3. التلم داخل الفص الجداري (IPS - مركز الحس العددي):",
+                normal: "يمكّن الطفل من فهم معنى الكميات، مقارنة الأعداد، وتقدير المقادير فوراً.",
+                dys: "خلل هذه المنطقة يسبب «الديسكالكوليا» (عسر الحساب) فلا يدرك التلميذ معنى العدد."
+            },
+            exner: {
+                title: "4. باحة إكسنر الجبهية والمخيخ (مركز الكتابة اليدوية):",
+                normal: "تبرمج الحركات الدقيقة لأصابع اليد لترسم الحروف بسلاسة وبسرعة آلية.",
+                dys: "اضطرابها يسبب «الديسغرافيا» (تشنج اليد، خط غير منتظم، وبطء شديد في الكتابة)."
+            }
+        };
+
+        function selectBrain(key) {
+            ['vwfa', 'phon', 'ips', 'exner'].forEach(k => {
+                const btn = document.getElementById(`b-${k}`);
+                if (k === key) {
+                    btn.className = "b-btn p-3 rounded-xl bg-[#1C3325] text-[#C5E86C] font-bold text-right transition";
+                } else {
+                    btn.className = "b-btn p-3 rounded-xl bg-black/5 dark:bg-white/5 font-bold text-right transition";
+                }
+            });
+            const d = brainData[key];
+            document.getElementById('brainInfoBox').innerHTML = `
+                <strong class="text-[#C5E86C] text-sm block">${d.title}</strong>
+                <p><strong>الوظيفة العادية:</strong> ${d.normal}</p>
+                <p class="text-emerald-200"><strong>عند الاضطراب:</strong> ${d.dys}</p>
+            `;
+        }
+
+        // 3. Syllabic Coloring Toggle (Axis 3.4)
+        function toggleSyllableView(mode) {
+            const box = document.getElementById('syllableDemoBox');
+            if (mode === 'normal') {
+                box.innerHTML = `<span class="text-white font-normal text-sm">يستيقظ الفلاح باكراً ليسقي أشجار البستان.</span>`;
+            } else {
+                box.innerHTML = `
+                    <span class="text-[#C5E86C]">يَـسْـ</span><span class="text-sky-300">تَـيْـ</span><span class="text-[#C5E86C]">قِـظُ</span>
+                    <span class="mx-1.5"></span>
+                    <span class="text-sky-300">الْـفَـ</span><span class="text-[#C5E86C]">لّاحُ</span>
+                    <span class="mx-1.5"></span>
+                    <span class="text-sky-300">بَـا</span><span class="text-[#C5E86C]">كِـ</span><span class="text-sky-300">راً</span>
+                    <span class="mx-1.5"></span>
+                    <span class="text-[#C5E86C]">لِـيَـسْـ</span><span class="text-sky-300">قِـيَ</span>
+                    <span class="mx-1.5"></span>
+                    <span class="text-[#C5E86C]">أَشْـ</span><span class="text-sky-300">جَـا</span><span class="text-[#C5E86C]">رَ</span>
+                    <span class="mx-1.5"></span>
+                    <span class="text-sky-300">الْـبُـسْـ</span><span class="text-[#C5E86C]">تَـا</span><span class="text-sky-300">نِ.</span>
+                `;
+            }
+        }
+
+        // 4. CPA Bruner Method Switcher (Axis 5.3)
+        function setCPA(stage) {
+            ['c', 'p', 'a'].forEach(s => {
+                const btn = document.getElementById(`cpa-${s}`);
+                if (s === stage) {
+                    btn.className = "px-4 py-2 rounded-full text-xs font-extrabold bg-[#1C3325] text-[#C5E86C] transition";
+                } else {
+                    btn.className = "px-4 py-2 rounded-full text-xs font-bold bg-black/10 dark:bg-white/10 transition";
+                }
+            });
+
+            const box = document.getElementById('cpaBox');
+            if (stage === 'c') {
+                box.innerHTML = `
+                    <div class="md:col-span-7 space-y-2">
+                        <strong class="text-base text-[#1C3325] dark:text-[#C5E86C] block">المرحلة 1: المحسوس الملموس باليد (مكعبات دينز Dienes والمعداد)</strong>
+                        <p class="text-xs sm:text-sm leading-relaxed">
+                            نعطي التلميذ مكعبات خشبية حقيقية يلمسها بيده: يضع <strong>5 صفائح للمئات</strong>، ويرى أن خانة <strong>العشرات فارغة (0)</strong>، ويضع <strong>3 مكعبات صغيرة للوحدات</strong>.
+                        </p>
+                    </div>
+                    <div class="md:col-span-5 p-4 rounded-xl bg-[#1C3325] text-white text-center">
+                        <div class="text-xs text-[#C5E86C] font-bold mb-2">تمثيل ملموس بمكعبات دينز</div>
+                        <div class="text-2xl font-black tracking-widest">5 مئات | 0 عشرات | 3 وحدات</div>
+                    </div>
+                `;
+            } else if (stage === 'p') {
+                box.innerHTML = `
+                    <div class="md:col-span-7 space-y-2">
+                        <strong class="text-base text-[#1C3325] dark:text-[#C5E86C] block">المرحلة 2: شبه المحسوس البصري (الرسم التخطيطي وجدول المنازل الملون)</strong>
+                        <p class="text-xs sm:text-sm leading-relaxed">
+                            يرسم التلميذ على دفتره 5 مربعات خضراء للمئات، ويترك عمود العشرات فارغاً، ويرسم 3 نقاط زرقاء للوحدات داخل جدول العد الملون.
+                        </p>
+                    </div>
+                    <div class="md:col-span-5 p-4 rounded-xl bg-[#1C3325] text-white text-center">
+                        <div class="text-xs text-[#C5E86C] font-bold mb-2">رسم تخطيطي (Pictorial)</div>
+                        <div class="text-xl font-black">▣▣▣▣▣  |  ∅  |  •••</div>
+                    </div>
+                `;
+            } else {
+                box.innerHTML = `
+                    <div class="md:col-span-7 space-y-2">
+                        <strong class="text-base text-[#1C3325] dark:text-[#C5E86C] block">المرحلة 3: المجرد الرمزي (كتابة الأرقام والعمليات بنجاح)</strong>
+                        <p class="text-xs sm:text-sm leading-relaxed">
+                            بعد الفهم الحسي والبصري، يكتب التلميذ العدد بالأرقام بشكل صحيح <strong>(503)</strong> ويفككه رياضياً دون الوقوع في خطأ (5003).
+                        </p>
+                    </div>
+                    <div class="md:col-span-5 p-4 rounded-xl bg-[#1C3325] text-white text-center">
+                        <div class="text-xs text-[#C5E86C] font-bold mb-2">الكتابة الرياضية المجردة</div>
+                        <div class="text-2xl font-mono font-black text-[#C5E86C]">503 = 500 + 0 + 3</div>
+                    </div>
+                `;
+            }
+        }
+
+        // 5. Glossary & Quick Term Explanation
+        function openGlossaryModal() {
+            const m = document.getElementById('glossaryModal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+        function closeGlossaryModal() {
+            const m = document.getElementById('glossaryModal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+        function explainTerm() {
+            openGlossaryModal();
+        }
+
+        // 6. Dyslexia Simulator Modal
+        let simTimer = null;
+        const cleanSentence = ["يحتاج", "التلميذ", "الذي", "يعاني", "من", "عسر", "القراءة", "إلى", "تفهم", "الأستاذ", "وتكييف", "النص", "القرائي."];
+        constdysSentence = ["يتحاج", "التلميد", "الدى", "يغاني", "من", "عصر", "الفرأءة", "إلى", "ثقهم", "الأستاد", "ونكييف", "البص", "القرأئي."];
+
+        function openSimulatorModal() {
+            const m = document.getElementById('simulatorModal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+            clearInterval(simTimer);
+            simTimer = setInterval(() => {
+                const el = document.getElementById('simText');
+                el.textContent = cleanSentence.map((w, i) => Math.random() > 0.45 ? constdysSentence[i] : w).join(' ');
+            }, 700);
+        }
+        function closeSimulatorModal() {
+            const m = document.getElementById('simulatorModal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+            clearInterval(simTimer);
+        }
+
+        // 7. Theme Switcher (Aeline Light vs Axolotl Emerald Dark)
+        function toggleNatureTheme() {
+            const html = document.documentElement;
+            const label = document.getElementById('themeText');
+            html.classList.toggle('axolotl-theme');
+            if (html.classList.contains('axolotl-theme')) {
+                label.textContent = "نمط Aeline الفاتح";
+            } else {
+                label.textContent = "نمط Axolotl الزمردي";
+            }
+        }
+
+        // 8. Fullscreen Toggle
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // 9. Active Navigation Highlight on Scroll
+        const sections = document.querySelectorAll('section[id]');
+        const dockLinks = document.querySelectorAll('.dock-link');
+        window.addEventListener('scroll', () => {
+            let current = 'intro';
+            sections.forEach(sec => {
+                const top = window.scrollY;
+                if (top >= sec.offsetTop - 220) {
+                    current = sec.getAttribute('id');
+                }
+            });
+            dockLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // =========================================================
+        // 10. PWA INSTALL & OFFLINE ENGINE (Phone + PC Support)
+        // =========================================================
+        let deferredInstallPrompt = null;
+
+        // Generate Dynamic App Icon SVG & Web Manifest for Phone/PC Installation
+        (function setupPWAAndOffline() {
+            const svgIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <rect width="512" height="512" rx="120" fill="#071D19"/>
+                <circle cx="256" cy="256" r="190" fill="#123D35" stroke="#C5E86C" stroke-width="16"/>
+                <text x="50%" y="46%" dominant-baseline="middle" text-anchor="middle" fill="#C5E86C" font-family="sans-serif" font-weight="900" font-size="150">S3</text>
+                <text x="50%" y="72%" dominant-baseline="middle" text-anchor="middle" fill="#FFFFFF" font-family="sans-serif" font-weight="700" font-size="68">DYS • ENS</text>
+            </svg>`;
+            const iconUrl = 'data:image/svg+xml;utf8,' + encodeURIComponent(svgIcon);
+
+            const manifestObj = {
+                name: "عرض S3 ENS: اضطرابات التعلم النمائية والأكاديمية",
+                short_name: "عرض S3 DYS",
+                description: "عرض أكاديمي تفاعلي حول الديسليكسيا والديسغرافيا والديسكالكوليا بسلك التعليم الابتدائي",
+                start_url: "./",
+                display: "standalone",
+                background_color: "#071D19",
+                theme_color: "#071D19",
+                lang: "ar",
+                dir: "rtl",
+                icons: [
+                    { src: iconUrl, sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
+                    { src: iconUrl, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
+                ]
+            };
+
+            const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
+            const manifestEl = document.getElementById('pwa-manifest');
+            if (manifestEl) {
+                manifestEl.setAttribute('href', URL.createObjectURL(manifestBlob));
+            }
+
+            // Pre-cache external assets into Browser Cache API when available so it works offline
+            if ('caches' in window) {
+                caches.open('ens-s3-dys-offline-v1').then(cache => {
+                    cache.addAll([
+                        window.location.href,
+                        'https://cdn.tailwindcss.com',
+                        'https://unpkg.com/@phosphor-icons/web'
+                    ]).catch(() => {});
+                }).catch(() => {});
+            }
+        })();
+
+        // Listen for native install prompt on Android / Desktop Chrome & Edge
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredInstallPrompt = e;
+        });
+
+        function openInstallModal() {
+            const m = document.getElementById('installModal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+            updateOnlineBadge();
+        }
+
+        function closeInstallModal() {
+            const m = document.getElementById('installModal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+
+        function showInstallFeedback(msg) {
+            const box = document.getElementById('installStatusMsg');
+            box.textContent = msg;
+            box.classList.remove('hidden');
+        }
+
+        async function triggerDirectPWAInstall() {
+            if (deferredInstallPrompt) {
+                deferredInstallPrompt.prompt();
+                const { outcome } = await deferredInstallPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    showInstallFeedback('✅ تم تثبيت التطبيق بنجاح على جهازك!');
+                }
+                deferredInstallPrompt = null;
+            } else {
+                showInstallFeedback('💡 لتثبيت التطبيق الآن: اضغط على قائمة المتصفح (⋮) في الهاتف أو أيقونة التثبيت في شريط العنوان بالحاسوب واختر "تثبيت التطبيق / الإضافة إلى الشاشة الرئيسية"، أو اضغط على الزر الثاني لحفظ نسخة Offline جاهزة.');
+            }
+        }
+
+        // Download complete self-contained HTML file for 100% offline USB/Phone/PC usage
+        function downloadOfflineFile() {
+            const modal = document.getElementById('installModal');
+            const wasOpen = !modal.classList.contains('hidden');
+            if (wasOpen) closeInstallModal();
+
+            const fullHtml = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+            const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Expose-S3-ENS-Troubles-DYS-Offline.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            if (wasOpen) {
+                openInstallModal();
+                showInstallFeedback('✅ تم تحميل ملف العرض المستقل (Expose-S3-ENS-Troubles-DYS-Offline.html) بنجاح! يمكنك فتحه في أي وقت على الهاتف أو الحاسوب بدون إنترنت.');
+            }
+        }
+
+        function updateOnlineBadge() {
+            const badge = document.getElementById('netStatusBadge');
+            if (!badge) return;
+            if (navigator.onLine) {
+                badge.textContent = 'متصل • جاهز للحفظ Offline';
+            } else {
+                badge.textContent = 'وضع بدون إنترنت نشط (Offline)';
+            }
+        }
+        window.addEventListener('online', updateOnlineBadge);
+        window.addEventListener('offline', updateOnlineBadge);
+    </script>
+</body>
+</html>
